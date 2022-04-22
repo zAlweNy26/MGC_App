@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "it.alwe" "\0"
-            VALUE "FileDescription", "flymeet" "\0"
+            VALUE "FileDescription", "FlyMeet" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "flymeet" "\0"
+            VALUE "InternalName", "FlyMeet" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 it.alwe. All rights reserved." "\0"
-            VALUE "OriginalFilename", "flymeet.exe" "\0"
-            VALUE "ProductName", "flymeet" "\0"
+            VALUE "OriginalFilename", "FlyMeet.exe" "\0"
+            VALUE "ProductName", "FlyMeet" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
