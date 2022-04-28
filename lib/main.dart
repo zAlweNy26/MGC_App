@@ -1,41 +1,52 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flymeet/constants.dart';
-import 'package:flymeet/pages/signup_page.dart';
 import 'package:flymeet/pages/welcome_page.dart';
 import 'package:flymeet/pages/login_page.dart';
 import 'package:page_transition/page_transition.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-void main() {
-  //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  runApp(const Main());
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(Main(savedThemeMode: savedThemeMode));
+  });
 }
 
 class Main extends StatelessWidget {
-  const Main({Key? key}) : super(key: key);
+  final AdaptiveThemeMode? savedThemeMode;
+
+  const Main({Key? key, this.savedThemeMode}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicApp(
-      debugShowCheckedModeBanner: false,
-      title: 'FlyMeet',
-      themeMode: ThemeMode.light,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case '/':
-            return PageTransition(child: const WelcomePage(), type: PageTransitionType.fade);
-          case '/login':
-            return PageTransition(child: const LoginPage(), type: PageTransitionType.fade);
-          case '/signup':
-            return PageTransition(child: const SignupPage(), type: PageTransitionType.fade);
-          default:
-            return null;
-        }
-      },
+    return AdaptiveTheme(
+      light: lightTheme,
+      dark: darkTheme,
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'FlyMeet',
+        theme: theme,
+        darkTheme: darkTheme,
+        initialRoute: '/',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return PageTransition(
+                  child: const WelcomePage(), type: PageTransitionType.fade);
+            case '/login':
+              return PageTransition(
+                  child: const LoginPage(), type: PageTransitionType.fade);
+            default:
+              return null;
+          }
+        },
+      ),
     );
   }
 }

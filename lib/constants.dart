@@ -1,33 +1,37 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Color mainLight = const Color(0xFFF50057);
 Color mainDark = const Color(0xFFD0004A);
 
-NeumorphicThemeData lightTheme = const NeumorphicThemeData(
-    baseColor: Colors.white,
-    lightSource: LightSource.topLeft,
-    depth: 8);
+ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: Colors.white,
+  primaryColor: mainLight,
+  textTheme: TextTheme(
+    headline1: GoogleFonts.dosis(color: Colors.black, fontSize: 48, fontWeight: FontWeight.bold),
+    headline4: GoogleFonts.dosis(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+    headline5: GoogleFonts.dosis(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+    headline6: GoogleFonts.dosis(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+    bodyText1: GoogleFonts.dosis(color: Colors.black, fontSize: 24),
+    bodyText2: GoogleFonts.dosis(color: Colors.black, fontSize: 18),
+  ),
+);
 
-NeumorphicThemeData darkTheme = NeumorphicThemeData(
-    baseColor: Colors.grey.shade900,
-    lightSource: LightSource.bottomRight,
-    depth: 4);
+ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: Colors.grey.shade900,
+  primaryColor: mainLight,
+  textTheme: TextTheme(
+    headline1: GoogleFonts.dosis(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
+    headline4: GoogleFonts.dosis(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+    headline5: GoogleFonts.dosis(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+    bodyText1: GoogleFonts.dosis(color: Colors.white, fontSize: 24),
+    bodyText2: GoogleFonts.dosis(color: Colors.white, fontSize: 18),
+  ),
+);
 
-Color textColor(BuildContext context) {
-  if (NeumorphicTheme.isUsingDark(context)) {
-    return Colors.white;
-  } else {
-    return Colors.black;
-  }
-}
-
-TextStyle themedStyle({required bool invert, double size = 18, FontWeight weight = FontWeight.normal, Color? color}) {
-  Color textColor = color ?? (invert ? Colors.grey.shade900 : Colors.white);
-  return GoogleFonts.dosis(fontSize: size, fontWeight: weight, color: textColor);
-}
-
-class BottomRoundedCorners extends NeumorphicPathProvider {
+/*class BottomRoundedCorners extends NeumorphicPathProvider {
   @override
   bool shouldReclip(NeumorphicPathProvider oldClipper) => true;
 
@@ -44,4 +48,4 @@ class BottomRoundedCorners extends NeumorphicPathProvider {
 
   @override
   bool get oneGradientPerPath => false;
-}
+}*/

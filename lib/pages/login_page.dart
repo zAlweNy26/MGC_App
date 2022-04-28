@@ -1,6 +1,9 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flymeet/constants.dart';
-import 'package:flymeet/widgets/neumorphic_input.dart';
+import 'package:flymeet/widgets/custom_button.dart';
+import 'package:flymeet/widgets/custom_input.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,112 +15,105 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _loginKey = GlobalKey<FormState>();
+
+  bool isRegistering = false;
 
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
+      body: Container(
         height: screen.height,
+        width: screen.width,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                width: double.infinity,
-                height: screen.shortestSide * 0.5,
-                child: Neumorphic(
-                  style: NeumorphicStyle(
-                      boxShape:
-                          NeumorphicBoxShape.path(BottomRoundedCorners())),
-                  padding: const EdgeInsets.only(left: 20, top: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Welcome back !",
-                          textAlign: TextAlign.center,
-                          style: themedStyle(
-                              invert: !NeumorphicTheme.isUsingDark(context),
-                              size: 42,
-                              weight: FontWeight.bold,
-                              color: mainLight)),
-                      const SizedBox(height: 10),
-                      Text(
-                        "Log in and get started right now !",
-                        style: themedStyle(
-                            invert: !NeumorphicTheme.isUsingDark(context)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                height: screen.longestSide - (screen.shortestSide * 0.5),
-                padding: const EdgeInsets.all(10),
+          child: Form(
+              key: _loginKey,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: screen.longestSide - 60),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                          onPressed: () => {Navigator.pop(context)},
-                          icon: Icon(
-                            Icons.arrow_back_rounded,
-                            size: 32,
-                            color: mainLight,
-                          )),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SvgPicture.asset(
+                      isRegistering ? "assets/register.svg" : "assets/login.svg",
+                      width: screen.shortestSide,
+                      semanticsLabel: isRegistering ? "Register illustration" : "Login illustration",
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: isRegistering ? "New account !\n" : "Welcome back !\n",
+                        style: Theme.of(context).textTheme.headline1,
                         children: [
-                          NeumorphicInput(
-                            hintLabel: "Email", 
-                            editingController: emailController, 
-                            prefixIcon: Icons.email_outlined,
-                            suffixIcon: Icons.close_rounded
-                          ),
-                          SizedBox(height: screen.shortestSide * 0.1),
-                          NeumorphicInput(
-                            hintLabel: "Password", 
-                            editingController: passwordController, 
-                            prefixIcon: Icons.password_outlined, 
-                            suffixIcon: Icons.close_rounded,
-                            obscure: true
-                          ),
-                          SizedBox(height: screen.shortestSide * 0.1),
-                          SizedBox(
-                            width: screen.shortestSide,
-                            child: NeumorphicButton(
-                                onPressed: () =>
-                                    {Navigator.pushNamed(context, '/home')},
-                                style: NeumorphicStyle(
-                                  surfaceIntensity: 1,
-                                  color: mainLight,
-                                  shape: NeumorphicShape.convex,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(50)),
-                                ),
-                                padding: const EdgeInsets.all(15),
-                                child: Text(
-                                  "Log in",
-                                  textAlign: TextAlign.center,
-                                  style: themedStyle(
-                                      invert:
-                                          NeumorphicTheme.isUsingDark(context),
-                                      size: 24),
-                                )),
-                          ),
+                          TextSpan(
+                              text: isRegistering ? "Already have an account ?" : "Don't have an account ?",
+                              style: Theme.of(context).textTheme.bodyText2),
+                          TextSpan(
+                              text: isRegistering ? " Log in now !" : " Sign in now !",
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  setState(() {
+                                    isRegistering = !isRegistering;
+                                  });
+                                },
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2
+                                  ?.copyWith(
+                                      color: mainLight,
+                                      fontWeight: FontWeight.bold)),
                         ],
                       ),
-                    )
+                    ),
+                    CustomInputField(
+                      width: screen.shortestSide,
+                      inputType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_outlined,
+                      placeholder: "Email",
+                    ),
+                    if (isRegistering) Row(
+                      children: <Widget>[
+                        CustomInputField(
+                          width: screen.shortestSide / 2.5,
+                          obscureText: true,
+                          inputType: TextInputType.text,
+                          placeholder: "First Name"
+                        ),
+                        const Spacer(),
+                        CustomInputField(
+                          width: screen.shortestSide / 2.5,
+                          obscureText: true,
+                          inputType: TextInputType.text,
+                          placeholder: "Last Name"
+                        ),
+                      ]
+                    ),
+                    CustomInputField(
+                      width: screen.shortestSide,
+                      obscureText: true,
+                      inputType: TextInputType.visiblePassword,
+                      placeholder: "Password",
+                      prefixIcon: Icons.password_outlined,
+                    ),
+                    CustomButton(
+                      onPressed: () {
+                        if (_loginKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Processing Data')),
+                          );
+                        }
+                      },
+                      text: isRegistering ? "Sign up" : "Log in",
+                      textStyle: Theme.of(context).textTheme.headline5,
+                      startColor: mainLight,
+                      endColor: mainDark,
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
+              )),
         ),
       ),
     );
