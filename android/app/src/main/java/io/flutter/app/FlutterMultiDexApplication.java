@@ -9,6 +9,7 @@ import androidx.multidex.MultiDex;
 
 /**
  * Extension of {@link io.flutter.app.FlutterApplication}, adding multidex support.
+ */
 public class FlutterMultiDexApplication extends FlutterApplication {
   @Override
   @CallSuper
