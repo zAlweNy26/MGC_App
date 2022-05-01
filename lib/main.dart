@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flymeet/constants.dart';
+import 'package:flymeet/pages/home_page.dart';
 import 'package:flymeet/pages/welcome_page.dart';
 import 'package:flymeet/pages/login_page.dart';
 import 'package:page_transition/page_transition.dart';
@@ -28,10 +29,10 @@ class Main extends StatelessWidget {
       light: lightTheme,
       dark: darkTheme,
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => MaterialApp(
+      builder: (lightTheme, darkTheme) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'FlyMeet',
-        theme: theme,
+        theme: lightTheme,
         darkTheme: darkTheme,
         initialRoute: '/',
         onGenerateRoute: (settings) {
@@ -42,6 +43,9 @@ class Main extends StatelessWidget {
             case '/login':
               return PageTransition(
                   child: const LoginPage(), type: PageTransitionType.fade);
+            case '/home':
+              return PageTransition(
+                  child: const HomePage(), type: PageTransitionType.fade);
             default:
               return null;
           }

@@ -3,31 +3,46 @@ import 'package:google_fonts/google_fonts.dart';
 
 Color mainLight = const Color(0xFFF50057);
 Color mainDark = const Color(0xFFD0004A);
+Color appWhite = Colors.grey.shade200;
+Color appBlack = Colors.grey.shade900;
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: appWhite,
+  backgroundColor: appBlack,
   primaryColor: mainLight,
   textTheme: TextTheme(
-    headline1: GoogleFonts.dosis(color: Colors.black, fontSize: 48, fontWeight: FontWeight.bold),
-    headline4: GoogleFonts.dosis(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
-    headline5: GoogleFonts.dosis(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-    headline6: GoogleFonts.dosis(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-    bodyText1: GoogleFonts.dosis(color: Colors.black, fontSize: 24),
-    bodyText2: GoogleFonts.dosis(color: Colors.black, fontSize: 18),
+    headlineLarge: GoogleFonts.dosis(
+        color: appBlack, fontSize: 48, fontWeight: FontWeight.bold),
+    headlineMedium: GoogleFonts.dosis(
+        color: appBlack, fontSize: 24, fontWeight: FontWeight.bold),
+    titleMedium: GoogleFonts.dosis(
+        color: appWhite, fontSize: 24, fontWeight: FontWeight.bold),
+    titleSmall: GoogleFonts.dosis(
+        color: appBlack, fontSize: 18, fontWeight: FontWeight.bold),
+    labelSmall: GoogleFonts.dosis(color: appBlack, fontSize: 14),
+    bodyMedium: GoogleFonts.dosis(color: appBlack, fontSize: 24),
+    bodySmall: GoogleFonts.dosis(color: appBlack, fontSize: 18),
   ),
 );
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.grey.shade900,
+  scaffoldBackgroundColor: appBlack,
+  backgroundColor: appWhite,
   primaryColor: mainLight,
   textTheme: TextTheme(
-    headline1: GoogleFonts.dosis(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
-    headline4: GoogleFonts.dosis(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-    headline5: GoogleFonts.dosis(color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
-    bodyText1: GoogleFonts.dosis(color: Colors.white, fontSize: 24),
-    bodyText2: GoogleFonts.dosis(color: Colors.white, fontSize: 18),
+    headlineLarge: GoogleFonts.dosis(
+        color: appWhite, fontSize: 48, fontWeight: FontWeight.bold),
+    headlineMedium: GoogleFonts.dosis(
+        color: appWhite, fontSize: 24, fontWeight: FontWeight.bold),
+    titleMedium: GoogleFonts.dosis(
+        color: appBlack, fontSize: 24, fontWeight: FontWeight.bold),
+    titleSmall: GoogleFonts.dosis(
+        color: appWhite, fontSize: 18, fontWeight: FontWeight.bold),
+    labelSmall: GoogleFonts.dosis(color: appWhite, fontSize: 14),
+    bodyMedium: GoogleFonts.dosis(color: appWhite, fontSize: 24),
+    bodySmall: GoogleFonts.dosis(color: appWhite, fontSize: 18),
   ),
 );
 

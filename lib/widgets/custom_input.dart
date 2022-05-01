@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flymeet/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomInputField extends StatefulWidget {
-  final double width, borderRadius;
+  final double borderRadius;
   final Color backgroundColor, textColor;
   final String? placeholder, fontFamily;
   final IconData? prefixIcon, suffixIcon;
@@ -21,17 +22,16 @@ class CustomInputField extends StatefulWidget {
 
   const CustomInputField(
       {Key? key,
-      required this.width,
       required this.inputType,
       this.prefixIcon,
       this.controller,
       this.suffixIcon,
       this.duration = const Duration(milliseconds: 500),
-      this.textPadding = const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+      this.textPadding = const EdgeInsets.symmetric(horizontal: 15),
       this.obscureText = false,
-      this.backgroundColor = Colors.white,
+      this.backgroundColor = Colors.transparent,
       this.borderRadius = 100,
-      this.textColor = Colors.black,
+      this.textColor = Colors.grey,
       this.placeholder = "",
       this.isShadow = true,
       this.onClickSuffix,
@@ -56,6 +56,7 @@ class CustomInputField extends StatefulWidget {
 
 class _CustomInputFieldState extends State<CustomInputField> {
   bool isFocus = false, isObscured = true;
+  String text = "", errorText = "";
 
   final _focusNode = FocusNode();
 
@@ -77,68 +78,109 @@ class _CustomInputFieldState extends State<CustomInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      child: Material(
-        color: widget.backgroundColor,
-        elevation: 5,
-        borderRadius: BorderRadius.circular(widget.borderRadius),
-        child: TextFormField(
-          validator: (val) {
-            if (val == null || val.isEmpty) {
-              return 'Required';
-            }
-            return null;
-          },
-          style: Theme.of(context).textTheme.bodyText2,
-          controller: widget.controller,
-          obscureText: widget.obscureText && isObscured,
-          keyboardType: widget.inputType,
-          cursorColor: mainLight,
-          autofocus: widget.autofocus,
-          autocorrect: widget.autocorrect,
-          focusNode: _focusNode,
-          enabled: widget.enabled,
-          onChanged: widget.onChanged,
-          onTap: () {
+    return Material(
+      color: widget.backgroundColor,
+      shadowColor: Theme.of(context).backgroundColor,
+      elevation: 3,
+      borderRadius: BorderRadius.circular(widget.borderRadius),
+      child: TextFormField(
+        validator: (val) {
+          if (val == null || val.isEmpty) {
             setState(() {
-              isFocus = true;
+              errorText = "Required";
             });
-            if (widget.onTap != null) widget.onTap!();
-          },
-          onFieldSubmitted: (t) {
+            return "";
+          }
+          bool emailValid = RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(val);
+          if (!emailValid && widget.inputType == TextInputType.emailAddress) {
             setState(() {
-              isFocus = false;
+              errorText = "Not valid";
             });
-            if (widget.onSubmitted != null) widget.onSubmitted!(t);
-          },
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            contentPadding: widget.textPadding,
-            hintText: "Your ${widget.placeholder}...",
-            focusedBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(100)),
-                borderSide: BorderSide(width: 2, color: mainLight)),
-            border: InputBorder.none,
-            prefixIcon: widget.prefixIcon != null
-                ? Icon(widget.prefixIcon,
-                    color: isFocus ? mainLight : Colors.grey)
-                : null,
-            suffixIcon: widget.obscureText ? 
-              IconButton(
-                splashRadius: 1,
-                onPressed: () => setState(
-                  () => isObscured = !isObscured,
-                ),
-                icon: Icon(
-                  isObscured ? Icons.visibility_outlined : Icons.visibility_off_outlined, 
-                  color: isFocus ? mainLight : Colors.grey)
-              ) : (widget.suffixIcon != null ? IconButton(
-                onPressed: widget.onClickSuffix,
-                icon: Icon(widget.suffixIcon, color: isFocus ? mainLight : Colors.grey)
-              )
-              : null),
-          ),
+            return "";
+          }
+          bool pswValid = RegExp(
+                  r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+              .hasMatch(val);
+          if (!pswValid && widget.inputType == TextInputType.visiblePassword) {
+            setState(() {
+              errorText = "Not valid";
+            });
+            return "";
+          }
+          setState(() {
+            errorText = "";
+          });
+          return "";
+        },
+        style: Theme.of(context).textTheme.bodySmall,
+        controller: widget.controller,
+        obscureText: widget.obscureText && isObscured,
+        keyboardType: widget.inputType,
+        cursorColor: mainLight,
+        autofocus: widget.autofocus,
+        autocorrect: widget.autocorrect,
+        focusNode: _focusNode,
+        enabled: widget.enabled,
+        onChanged: widget.onChanged ?? (t) => setState(() => text = t),
+        onTap: () {
+          setState(() {
+            isFocus = true;
+          });
+          if (widget.onTap != null) widget.onTap!();
+        },
+        onFieldSubmitted: (t) {
+          setState(() {
+            isFocus = false;
+          });
+          if (widget.onSubmitted != null) widget.onSubmitted!(t);
+        },
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          contentPadding: widget.textPadding,
+          labelText: widget.placeholder! +
+              (errorText.isNotEmpty ? " - $errorText" : ""),
+          errorStyle: const TextStyle(height: 0),
+          floatingLabelBehavior: errorText.isNotEmpty
+              ? FloatingLabelBehavior.always
+              : FloatingLabelBehavior.auto,
+          floatingLabelStyle: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: mainLight),
+          hintText: "Your ${widget.placeholder}...",
+          focusedBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.all(Radius.circular(widget.borderRadius)),
+              borderSide: BorderSide(width: 2, color: mainLight)),
+          border: InputBorder.none,
+          prefixIcon: widget.prefixIcon != null
+              ? Icon(widget.prefixIcon,
+                  color:
+                      isFocus ? mainLight : Theme.of(context).backgroundColor)
+              : null,
+          suffixIcon: widget.obscureText
+              ? IconButton(
+                  splashRadius: 1,
+                  onPressed: () => setState(
+                        () => isObscured = !isObscured,
+                      ),
+                  icon: Icon(
+                      isObscured
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      color: isFocus
+                          ? mainLight
+                          : Theme.of(context).backgroundColor))
+              : (widget.suffixIcon != null
+                  ? IconButton(
+                      onPressed: widget.onClickSuffix,
+                      icon: Icon(widget.suffixIcon,
+                          color: isFocus
+                              ? mainLight
+                              : Theme.of(context).backgroundColor))
+                  : null),
         ),
       ),
     );
