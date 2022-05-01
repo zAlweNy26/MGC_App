@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flymeet/constants.dart';
 
 class CustomButton extends StatefulWidget {
   final Color? backgroundColor, borderColor, startColor, endColor;
   final bool onlyIcon;
   final double width, height;
-  final Icon? icon;
+  final Widget? icon;
   final String text;
   final double radius, borderWidth;
   final EdgeInsets padding;
@@ -57,6 +56,16 @@ class _CustomButtonState extends State<CustomButton> {
       : DecoratedBox(
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(widget.radius),
+        /*boxShadow: const [BoxShadow(
+          color: Color(0xFFCACACA),
+          offset: Offset(20, 20),
+          blurRadius: 60,
+        ),
+        BoxShadow(
+          color: Colors.white,
+          offset: Offset(-20, -20),
+          blurRadius: 60
+        )],*/
         gradient: widget.startColor != null && widget.endColor != null
             ? LinearGradient(
                 colors: [widget.startColor!, widget.endColor!])

@@ -1,10 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flymeet/constants.dart';
 import 'package:flymeet/widgets/custom_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -76,28 +75,26 @@ class _WelcomePageState extends State<WelcomePage> {
                   ]
                 ),*/
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomButton(
-                        onPressed: () => {},
-                        onlyIcon: true,
-                        icon: const Icon(FontAwesome.facebook,
-                            color: Color(0xFF4267B2)),
-                      ),
-                      CustomButton(
-                        onPressed: () =>
-                            {AdaptiveTheme.of(context).toggleThemeMode()},
-                        onlyIcon: true,
-                        icon: const Icon(FontAwesome.google,
-                            color: Color(0xFFDB4437)),
-                      ),
-                      CustomButton(
-                        onPressed: () => {},
-                        onlyIcon: true,
-                        icon: const Icon(FontAwesome.twitter,
-                            color: Color(0xFF1DA1F2)),
-                      ),
-                    ]),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomButton(
+                      onPressed: () => {},
+                      onlyIcon: true,
+                      icon: const FaIcon(FontAwesomeIcons.facebookF, color: Color(0xFF4267B2)),
+                    ),
+                    CustomButton(
+                      onPressed: () =>
+                          {AdaptiveTheme.of(context).toggleThemeMode()},
+                      onlyIcon: true,
+                      icon: const FaIcon(FontAwesomeIcons.google, color: Color(0xFFDB4437)),
+                    ),
+                    CustomButton(
+                      onPressed: () => {},
+                      onlyIcon: true,
+                      icon: const FaIcon(FontAwesomeIcons.twitter, color: Color(0xFF1DA1F2)),
+                    ),
+                  ]
+                ),
               ],
             ),
           ))),

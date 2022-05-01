@@ -128,9 +128,9 @@ class _LoginPageState extends State<LoginPage> {
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
                             ).then((value) {
-                              if (value != null)
-                                birthdayController.text =
-                                    DateFormat("dd/MM/yyyy").format(value);
+                              if (value != null) {
+                                birthdayController.text = DateFormat("dd/MM/yyyy").format(value);
+                              }
                             });
                           },
                         )),

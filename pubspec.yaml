@@ -36,11 +36,14 @@ dependencies:
   adaptive_theme: ^2.3.1
   local_auth: ^2.0.0
   firebase_auth: ^3.3.15
-  flutter_icons: ^1.1.0
   country_code_picker: ^2.0.2
   hive: ^2.1.0
   flutter_platform_widgets: ^1.20.0
   intl: ^0.17.0
+  curved_navigation_bar: ^1.0.3
+  flutter_launcher_icons: ^0.9.2
+  flutter_local_notifications: ^9.4.1
+  font_awesome_flutter: ^10.1.0
 
 dev_dependencies:
   flutter_test:
