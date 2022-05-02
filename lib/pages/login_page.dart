@@ -1,4 +1,7 @@
+import 'package:bottom_picker/bottom_picker.dart';
+import 'package:bottom_picker/resources/arrays.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -121,17 +124,38 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor:
                               Theme.of(context).scaffoldBackgroundColor,
                           onTap: () async {
-                            showPlatformDatePicker(
+                            BottomPicker.date(
+                              title: "Set your Birthday",
+                              dismissable: true,
+                              pickerTextStyle: Theme.of(context).textTheme.labelSmall!,
+                              closeIconColor: Theme.of(context).backgroundColor,
+                              displaySubmitButton: true,
+                              buttonSingleColor: mainLight,
+                              titleStyle: Theme.of(context).textTheme.titleSmall!.copyWith(color: mainLight),
+                              onSubmit: (dt) => birthdayController.text = DateFormat("dd/MM/yyyy").format(dt),
+                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                              minDateTime: DateTime(1900),
+                              maxDateTime: DateTime.now().subtract(const Duration(days: 5840)),
+                              dateOrder: DatePickerDateOrder.dmy
+                            ).show(context);
+                            /*showPlatformDatePicker(
                               context: context,
                               initialDate: DateTime.now()
                                   .subtract(const Duration(days: 5840)),
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
+                              material: (context, platform) =>
+                                MaterialDatePickerData(
+                                  initialDatePickerMode: DatePickerMode.year
+                                ),
+                              cupertino: (context, platform) =>
+                                CupertinoDatePickerData(
+                                ),
                             ).then((value) {
                               if (value != null) {
                                 birthdayController.text = DateFormat("dd/MM/yyyy").format(value);
                               }
-                            });
+                            });*/
                           },
                         )),
                         SizedBox(width: screen.width * 0.05),
@@ -160,23 +184,22 @@ class _LoginPageState extends State<LoginPage> {
                         ))
                       ]),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        CustomInputField(
-                          obscureText: true,
-                          inputType: TextInputType.visiblePassword,
-                          placeholder: "Password",
-                          backgroundColor:
-                              Theme.of(context).scaffoldBackgroundColor,
-                          prefixIcon: Icons.password_outlined,
-                        ),
-                        if (isRegistering) const SizedBox(height: 5),
-                        if (isRegistering) Text(
-                          "The password must be minimum 8 characters long, with at least one uppercase letter, one lowercase letter, one number and one special character (@\$!%*?&)",
-                          style: Theme.of(context).textTheme.labelSmall
-                        ),
-                      ]
-                    ),
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CustomInputField(
+                            obscureText: true,
+                            inputType: TextInputType.visiblePassword,
+                            placeholder: "Password",
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            prefixIcon: Icons.password_outlined,
+                          ),
+                          if (isRegistering) const SizedBox(height: 5),
+                          if (isRegistering)
+                            Text(
+                                "The password must be minimum 8 characters long, with at least one uppercase letter, one lowercase letter, one number and one special character (@\$!%*?&)",
+                                style: Theme.of(context).textTheme.labelSmall),
+                        ]),
                     Row(
                       children: [
                         CustomSwitch(

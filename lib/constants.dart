@@ -11,6 +11,19 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: appWhite,
   backgroundColor: appBlack,
   primaryColor: mainLight,
+  colorScheme: ColorScheme(
+    brightness: Brightness.light, 
+    primary: mainLight, 
+    onPrimary: appWhite, 
+    secondary: mainDark, 
+    onSecondary: appBlack, 
+    error: Colors.red, 
+    onError: appBlack, 
+    background: appWhite, 
+    onBackground: appBlack,
+    surface: Colors.grey,
+    onSurface: appBlack
+  ),
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.dosis(
         color: appBlack, fontSize: 48, fontWeight: FontWeight.bold),
@@ -31,6 +44,19 @@ ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: appBlack,
   backgroundColor: appWhite,
   primaryColor: mainLight,
+  colorScheme: ColorScheme(
+    brightness: Brightness.dark, 
+    primary: mainLight, 
+    onPrimary: appWhite, 
+    secondary: mainDark, 
+    onSecondary: appBlack, 
+    error: Colors.red, 
+    onError: appBlack, 
+    background: appWhite, 
+    onBackground: appBlack,
+    surface: Colors.grey,
+    onSurface: appBlack
+  ),
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.dosis(
         color: appWhite, fontSize: 48, fontWeight: FontWeight.bold),
