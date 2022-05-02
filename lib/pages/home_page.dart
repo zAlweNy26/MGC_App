@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         height: screen.height,
         width: screen.width,
         child: PageView(
+          physics: const BouncingScrollPhysics(),
           onPageChanged: (value) => setState(() => currentPage = value),
           controller: pagesController,
           children: navPages
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CurvedNavigationBar(
         color: mainLight,
         height: 56,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Colors.transparent,
         animationDuration: const Duration(milliseconds: 300),
         index: currentPage,
         items: [

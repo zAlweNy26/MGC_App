@@ -29,11 +29,11 @@ class Main extends StatelessWidget {
       light: lightTheme,
       dark: darkTheme,
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
-      builder: (lightTheme, darkTheme) => MaterialApp(
+      builder: (light, dark) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'FlyMeet',
-        theme: lightTheme,
-        darkTheme: darkTheme,
+        theme: light,
+        darkTheme: dark,
         initialRoute: '/',
         onGenerateRoute: (settings) {
           switch (settings.name) {

@@ -10,6 +10,10 @@ Are you alone but want to travel in company? With FlyMeet you can meet someone w
     - 'flutter doctor'
     - 'flutter upgrade'
 
+## Useful links I used :
+- [MediaQuery's viewPadding and viewInsets](https://medium.com/flutter-community/a-flutter-guide-to-visual-overlap-padding-viewpadding-and-viewinsets-a63e214be6e8)
+- [Row, Column and Flex](https://medium.com/flutter-community/flutter-widgets-row-column-flex-the-whole-picture-a648cd6e6904)
+
 ## Roadmap :
 - Tutorial al primo avvio dopo che fai il register (skippabile) :
 	- mostra come funziona l'app

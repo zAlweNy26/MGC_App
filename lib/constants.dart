@@ -34,8 +34,9 @@ ThemeData lightTheme = ThemeData(
     titleSmall: GoogleFonts.dosis(
         color: appBlack, fontSize: 18, fontWeight: FontWeight.bold),
     labelSmall: GoogleFonts.dosis(color: appBlack, fontSize: 14),
-    bodyMedium: GoogleFonts.dosis(color: appBlack, fontSize: 24),
-    bodySmall: GoogleFonts.dosis(color: appBlack, fontSize: 18),
+    bodyLarge: GoogleFonts.dosis(color: appBlack, fontSize: 24),
+    bodyMedium: GoogleFonts.dosis(color: appBlack, fontSize: 20),
+    bodySmall: GoogleFonts.dosis(color: appBlack, fontSize: 16),
   ),
 );
 
@@ -67,8 +68,9 @@ ThemeData darkTheme = ThemeData(
     titleSmall: GoogleFonts.dosis(
         color: appWhite, fontSize: 18, fontWeight: FontWeight.bold),
     labelSmall: GoogleFonts.dosis(color: appWhite, fontSize: 14),
-    bodyMedium: GoogleFonts.dosis(color: appWhite, fontSize: 24),
-    bodySmall: GoogleFonts.dosis(color: appWhite, fontSize: 18),
+    bodyLarge: GoogleFonts.dosis(color: appWhite, fontSize: 24),
+    bodyMedium: GoogleFonts.dosis(color: appWhite, fontSize: 20),
+    bodySmall: GoogleFonts.dosis(color: appWhite, fontSize: 16),
   ),
 );
 

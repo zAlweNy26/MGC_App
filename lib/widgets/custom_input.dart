@@ -113,7 +113,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
           });
           return "";
         },
-        style: Theme.of(context).textTheme.bodySmall,
+        style: Theme.of(context).textTheme.bodyMedium,
         controller: widget.controller,
         obscureText: widget.obscureText && isObscured,
         keyboardType: widget.inputType,

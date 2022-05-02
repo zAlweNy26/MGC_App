@@ -45,6 +45,7 @@ dependencies:
   flutter_local_notifications: ^9.4.1
   font_awesome_flutter: ^10.1.0
   bottom_picker: ^1.8.0
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:
