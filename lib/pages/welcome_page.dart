@@ -17,14 +17,13 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    EdgeInsets partialPadding = MediaQuery.of(context).viewPadding;
 
     return Scaffold(
       body: SizedBox(
         height: screen.height,
         width: screen.width,
         child: PaddedScrollView(
-          padding: const EdgeInsets.all(20),
+          scrollPadding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,6 +33,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 width: screen.width,
                 semanticsLabel: "Welcome illustration",
               ),
+              SizedBox(height: screen.width * 0.05),
               RichText(
                 text: TextSpan(
                   text: "Welcome !\n",
@@ -46,14 +46,15 @@ class _WelcomePageState extends State<WelcomePage> {
                   ],
                 ),
               ),
+              SizedBox(height: screen.width * 0.05),
               CustomButton(
                 onPressed: () => Navigator.pushNamed(context, '/login'),
                 text: "Log in / Sign up",
-                width: screen.width,
                 textStyle: Theme.of(context).textTheme.titleMedium,
                 startColor: mainLight,
                 endColor: mainDark,
               ),
+              SizedBox(height: screen.width * 0.05),
               /*Row(
                 children: <Widget>[
                   const Expanded(child: Divider(color: Colors.grey, thickness: 2)),

@@ -2,7 +2,9 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flymeet/constants.dart';
+import 'package:flymeet/pages/forgot_page.dart';
 import 'package:flymeet/pages/home_page.dart';
+import 'package:flymeet/pages/settings_page.dart';
 import 'package:flymeet/pages/welcome_page.dart';
 import 'package:flymeet/pages/login_page.dart';
 import 'package:page_transition/page_transition.dart';
@@ -28,7 +30,7 @@ class Main extends StatelessWidget {
     return AdaptiveTheme(
       light: lightTheme,
       dark: darkTheme,
-      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      initial: savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (light, dark) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'FlyMeet',
@@ -46,6 +48,12 @@ class Main extends StatelessWidget {
             case '/home':
               return PageTransition(
                   child: const HomePage(), type: PageTransitionType.fade);
+            case '/settings':
+              return PageTransition(
+                  child: const SettingsPage(), type: PageTransitionType.fade);
+            case '/forgot':
+              return PageTransition(
+                  child: const ForgotPage(), type: PageTransitionType.fade);
             default:
               return null;
           }

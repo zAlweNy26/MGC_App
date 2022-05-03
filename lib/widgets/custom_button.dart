@@ -4,7 +4,6 @@ import 'package:flymeet/constants.dart';
 class CustomButton extends StatefulWidget {
   final Color? backgroundColor, borderColor, startColor, endColor;
   final bool onlyIcon;
-  final double width, height;
   final Widget? icon;
   final String text;
   final double radius, borderWidth;
@@ -16,15 +15,13 @@ class CustomButton extends StatefulWidget {
   const CustomButton(
       {Key? key,
       required this.onPressed,
-      this.width = 300,
-      this.height = 50,
       this.text = "",
       this.icon,
       this.onlyIcon = false,
-      this.padding = const EdgeInsets.all(10),
+      this.padding = const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       this.textStyle = const TextStyle(fontSize: 24, color: Colors.grey),
       this.backgroundColor = Colors.transparent,
-      this.radius = 50.0,
+      this.radius = 20,
       this.borderWidth = 2,
       this.startColor,
       this.endColor,

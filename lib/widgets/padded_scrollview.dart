@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PaddedScrollView extends StatefulWidget {
-  final EdgeInsets padding;
-  final Widget child;
+  final EdgeInsets scrollPadding, boxPadding;
+  final Widget? child, absoluteChild;
 
   const PaddedScrollView({
     Key? key,
-    required this.padding,
+    required this.scrollPadding,
+    this.absoluteChild,
+    this.boxPadding = const EdgeInsets.all(0),
     required this.child
   }) : super(key: key);
 
@@ -22,26 +24,34 @@ class _PaddedScrollViewState extends State<PaddedScrollView> {
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: EdgeInsets.only(
-        left: widget.padding.left + partialPadding.left,
-        right: widget.padding.right + partialPadding.right,
-        top: widget.padding.top + partialPadding.top,
-        bottom: widget.padding.bottom + partialPadding.bottom
-      ),
+      padding: widget.scrollPadding + partialPadding,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: screen.width -
             partialPadding.left -
             partialPadding.right -
-            widget.padding.left -
-            widget.padding.right,
+            widget.scrollPadding.left -
+            widget.scrollPadding.right,
           minHeight: screen.height - 
             partialPadding.top - 
             partialPadding.bottom - 
-            widget.padding.top - 
-            widget.padding.bottom
+            widget.scrollPadding.top - 
+            widget.scrollPadding.bottom
         ),
-        child: widget.child
+        child: widget.absoluteChild != null ?
+          Stack(
+            children: [
+              widget.absoluteChild!,
+              Padding(
+                padding: widget.boxPadding + partialPadding,
+                child: widget.child,
+              )
+            ],
+          )
+        : Padding(
+          padding: widget.boxPadding,
+          child: widget.child,
+        )
       ),
     );
   }

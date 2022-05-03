@@ -1,10 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flymeet/constants.dart';
-import 'package:flymeet/pages/chats_page.dart';
-import 'package:flymeet/pages/profile_page.dart';
-import 'package:flymeet/pages/search_page.dart';
+import 'package:flymeet/pages/navigation/chats_page.dart';
+import 'package:flymeet/pages/navigation/profile_page.dart';
+import 'package:flymeet/pages/navigation/search_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
