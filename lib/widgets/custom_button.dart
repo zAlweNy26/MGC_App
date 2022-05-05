@@ -41,16 +41,18 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return widget.onlyIcon
       ? Material(
-          clipBehavior: Clip.antiAlias,
-          elevation: 3,
-          borderRadius: BorderRadius.circular(widget.radius),
-          child: IconButton(
-            color: mainLight,
-            onPressed: widget.onPressed,
-            icon: widget.icon!,
-          ),
-        )
-      : DecoratedBox(
+        clipBehavior: Clip.antiAlias,
+        elevation: 3,
+        color: widget.backgroundColor,
+        borderRadius: BorderRadius.circular(widget.radius),
+        child: IconButton(
+          iconSize: widget.radius,
+          splashRadius: widget.radius,
+          color: mainLight,
+          onPressed: widget.onPressed,
+          icon: widget.icon!,
+        ),
+      ): DecoratedBox(
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(widget.radius),
         /*boxShadow: const [BoxShadow(

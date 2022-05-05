@@ -130,33 +130,36 @@ class _LoginPageState extends State<LoginPage> {
                                     Theme.of(context).scaffoldBackgroundColor,
                                 onTap: () {
                                   BottomPicker.date(
-                                          title: "Select your birth date",
-                                          dismissable: true,
-                                          pickerTextStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall!.copyWith(fontSize: 20),
-                                          closeIconColor:
-                                              Theme.of(context).backgroundColor,
-                                          displaySubmitButton: true,
-                                          buttonSingleColor: mainLight,
-                                          titleStyle: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(color: mainLight),
-                                          buttonText: "Confirm",
-                                          onSubmit: (dt) =>
-                                              birthDateController.text =
-                                                  DateFormat("dd/MM/yyyy")
-                                                      .format(dt),
-                                          backgroundColor: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          minDateTime: DateTime(1900),
-                                          initialDateTime: DateTime(
-                                              DateTime.now().year - 16),
-                                          maxDateTime: DateTime(
-                                              DateTime.now().year - 16),
-                                          dateOrder: DatePickerDateOrder.dmy)
-                                      .show(context);
+                                    title: "Select your birth date",
+                                    dismissable: true,
+                                    pickerTextStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!.copyWith(fontSize: 20),
+                                    closeIconColor:
+                                        Theme.of(context).backgroundColor,
+                                    displaySubmitButton: true,
+                                    buttonSingleColor: mainLight,
+                                    titleStyle: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .copyWith(color: mainLight),
+                                    buttonText: "Confirm",
+                                    buttonTextStyle: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall,
+                                    onSubmit: (dt) =>
+                                        birthDateController.text =
+                                            DateFormat("dd/MM/yyyy")
+                                                .format(dt),
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    minDateTime: DateTime(1900),
+                                    initialDateTime: DateTime(
+                                        DateTime.now().year - 16),
+                                    maxDateTime: DateTime(
+                                        DateTime.now().year - 16),
+                                    dateOrder: DatePickerDateOrder.dmy)
+                                .show(context);
                                 },
                               )),
                               SizedBox(width: screen.width * 0.05),
@@ -180,6 +183,9 @@ class _LoginPageState extends State<LoginPage> {
                                         .labelSmall!.copyWith(fontSize: 28),
                                     displaySubmitButton: true,
                                     buttonText: "Confirm",
+                                    buttonTextStyle: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall,
                                     buttonSingleColor: mainLight,
                                     titleStyle: Theme.of(context)
                                         .textTheme
@@ -281,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: screen.width * 0.05),
                     CustomButton(
                       onPressed: () {
-                        //Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/home');
                         if (_loginKey.currentState!.validate()) {
                           _loginKey.currentState!.save();
                           print("Email : $email");

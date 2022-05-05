@@ -71,17 +71,23 @@ class _WelcomePageState extends State<WelcomePage> {
                   CustomButton(
                     onPressed: () => {},
                     onlyIcon: true,
-                    icon: const FaIcon(FontAwesomeIcons.facebookF, color: Color(0xFF4267B2)),
+                    radius: 32,
+                    backgroundColor: lighten(Theme.of(context).scaffoldBackgroundColor),
+                    icon: const FaIcon(FontAwesomeIcons.facebookF, size: 28, color: Color(0xFF4267B2)),
                   ),
                   CustomButton(
                     onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
                     onlyIcon: true,
-                    icon: const FaIcon(FontAwesomeIcons.google, color: Color(0xFFDB4437)),
+                    radius: 32,
+                    backgroundColor: lighten(Theme.of(context).scaffoldBackgroundColor),
+                    icon: const FaIcon(FontAwesomeIcons.google, size: 28, color: Color(0xFFDB4437)),
                   ),
                   CustomButton(
                     onPressed: () => {},
                     onlyIcon: true,
-                    icon: const FaIcon(FontAwesomeIcons.twitter, color: Color(0xFF1DA1F2)),
+                    radius: 32,
+                    backgroundColor: lighten(Theme.of(context).scaffoldBackgroundColor),
+                    icon: const FaIcon(FontAwesomeIcons.twitter, size: 28, color: Color(0xFF1DA1F2)),
                   ),
                 ]
               ),

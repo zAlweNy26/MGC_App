@@ -137,12 +137,19 @@ class _CustomInputFieldState extends State<CustomInputField> {
           contentPadding: widget.textPadding,
           labelText: widget.placeholder! +
               (errorText.isNotEmpty ? " - $errorText" : ""),
+          labelStyle: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: mainLight),
           errorStyle: const TextStyle(height: 0),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           floatingLabelStyle: Theme.of(context)
               .textTheme
               .titleSmall
               ?.copyWith(color: mainLight),
+          hintStyle: Theme.of(context)
+              .textTheme
+              .labelMedium!.copyWith(color: Theme.of(context).colorScheme.surface),
           hintText: "Your ${widget.placeholder}...",
           focusedBorder: OutlineInputBorder(
               borderRadius:

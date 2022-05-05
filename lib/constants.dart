@@ -21,22 +21,23 @@ ThemeData lightTheme = ThemeData(
     onError: appBlack, 
     background: appWhite, 
     onBackground: appBlack,
-    surface: Colors.grey,
-    onSurface: appBlack
+    surface: darken(appWhite, 20),
+    onSurface: lighten(appBlack, 20)
   ),
   textTheme: TextTheme(
-    headlineLarge: GoogleFonts.dosis(
-        color: appBlack, fontSize: 48, fontWeight: FontWeight.bold),
-    headlineMedium: GoogleFonts.dosis(
-        color: appBlack, fontSize: 24, fontWeight: FontWeight.bold),
-    titleMedium: GoogleFonts.dosis(
-        color: appWhite, fontSize: 24, fontWeight: FontWeight.bold),
-    titleSmall: GoogleFonts.dosis(
-        color: appBlack, fontSize: 18, fontWeight: FontWeight.bold),
-    labelSmall: GoogleFonts.dosis(color: appBlack, fontSize: 14),
-    bodyLarge: GoogleFonts.dosis(color: appBlack, fontSize: 24),
-    bodyMedium: GoogleFonts.dosis(color: appBlack, fontSize: 20),
-    bodySmall: GoogleFonts.dosis(color: appBlack, fontSize: 16),
+    headlineLarge: GoogleFonts.nunito(
+        color: appBlack, fontSize: 44, fontWeight: FontWeight.bold),
+    headlineMedium: GoogleFonts.nunito(
+        color: appBlack, fontSize: 20, fontWeight: FontWeight.bold),
+    titleMedium: GoogleFonts.nunito(
+        color: appWhite, fontSize: 20, fontWeight: FontWeight.bold),
+    titleSmall: GoogleFonts.nunito(
+        color: appBlack, fontSize: 16, fontWeight: FontWeight.bold),
+    labelMedium: GoogleFonts.nunito(color: appBlack, fontSize: 16),
+    labelSmall: GoogleFonts.nunito(color: appBlack, fontSize: 12),
+    bodyLarge: GoogleFonts.nunito(color: appBlack, fontSize: 20),
+    bodyMedium: GoogleFonts.nunito(color: appBlack, fontSize: 18),
+    bodySmall: GoogleFonts.nunito(color: appBlack, fontSize: 14),
   ),
 );
 
@@ -55,24 +56,47 @@ ThemeData darkTheme = ThemeData(
     onError: appBlack, 
     background: appWhite, 
     onBackground: appBlack,
-    surface: Colors.grey,
-    onSurface: appBlack
+    surface: darken(appWhite, 20),
+    onSurface: lighten(appBlack, 20)
   ),
   textTheme: TextTheme(
-    headlineLarge: GoogleFonts.dosis(
-        color: appWhite, fontSize: 48, fontWeight: FontWeight.bold),
-    headlineMedium: GoogleFonts.dosis(
-        color: appWhite, fontSize: 24, fontWeight: FontWeight.bold),
-    titleMedium: GoogleFonts.dosis(
-        color: appBlack, fontSize: 24, fontWeight: FontWeight.bold),
-    titleSmall: GoogleFonts.dosis(
-        color: appWhite, fontSize: 18, fontWeight: FontWeight.bold),
-    labelSmall: GoogleFonts.dosis(color: appWhite, fontSize: 14),
-    bodyLarge: GoogleFonts.dosis(color: appWhite, fontSize: 24),
-    bodyMedium: GoogleFonts.dosis(color: appWhite, fontSize: 20),
-    bodySmall: GoogleFonts.dosis(color: appWhite, fontSize: 16),
+    headlineLarge: GoogleFonts.nunito(
+        color: appWhite, fontSize: 44, fontWeight: FontWeight.bold),
+    headlineMedium: GoogleFonts.nunito(
+        color: appWhite, fontSize: 20, fontWeight: FontWeight.bold),
+    titleMedium: GoogleFonts.nunito(
+        color: appBlack, fontSize: 20, fontWeight: FontWeight.bold),
+    titleSmall: GoogleFonts.nunito(
+        color: appWhite, fontSize: 16, fontWeight: FontWeight.bold),
+    labelMedium: GoogleFonts.nunito(color: appWhite, fontSize: 16),
+    labelSmall: GoogleFonts.nunito(color: appWhite, fontSize: 12),
+    bodyLarge: GoogleFonts.nunito(color: appWhite, fontSize: 20),
+    bodyMedium: GoogleFonts.nunito(color: appWhite, fontSize: 18),
+    bodySmall: GoogleFonts.nunito(color: appWhite, fontSize: 14),
   ),
 );
+
+Color darken(Color c, [int percent = 10]) {
+    assert(1 <= percent && percent <= 100);
+    var f = 1 - percent / 100;
+    return Color.fromARGB(
+        c.alpha,
+        (c.red * f).round(),
+        (c.green  * f).round(),
+        (c.blue * f).round()
+    );
+}
+
+Color lighten(Color c, [int percent = 10]) {
+    assert(1 <= percent && percent <= 100);
+    var p = percent / 100;
+    return Color.fromARGB(
+        c.alpha,
+        c.red + ((255 - c.red) * p).round(),
+        c.green + ((255 - c.green) * p).round(),
+        c.blue + ((255 - c.blue) * p).round()
+    );
+}
 
 /*class BottomRoundedCorners extends NeumorphicPathProvider {
   @override
