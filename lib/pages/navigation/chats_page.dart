@@ -12,10 +12,10 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     return PaddedScrollView(
-      scrollPadding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 76), 
+      scrollPadding: const EdgeInsets.only(bottom: 76, left: 10, top: 10, right: 10),
       child: Column(
         children: [
-          Text("Chats Page", style: Theme.of(context).textTheme.headlineLarge),
+          Text("Chats Page", style: Theme.of(context).textTheme.headlineMedium),
         ],
       )
     );

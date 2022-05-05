@@ -16,11 +16,12 @@ class ForgotPage extends StatefulWidget {
 
 class _ForgotPageState extends State<ForgotPage> {
   final _forgotKey = GlobalKey<FormState>();
-  String email = "", newPassword = "";
-  bool emailSent = false, isResetting = false;
+  String email = "", newPassword = "", confirmPassword = "";
+  bool emailSent = false, isResetting = false, noPasswordMatch = false;
 
   Future<bool> _onWillPop() async {
     emailSent = false;
+    isResetting = false;
     return true;
   }
 
@@ -31,7 +32,7 @@ class _ForgotPageState extends State<ForgotPage> {
     final customPinTheme = PinTheme(
       width: 56,
       height: 60,
-      textStyle: Theme.of(context).textTheme.headlineMedium,
+      textStyle: Theme.of(context).textTheme.headlineSmall,
       decoration: BoxDecoration(
         color: lighten(Theme.of(context).scaffoldBackgroundColor, 20),
         borderRadius: BorderRadius.circular(15),
@@ -46,107 +47,151 @@ class _ForgotPageState extends State<ForgotPage> {
           height: screen.height,
           width: screen.width,
           child: PaddedScrollView(
-            scrollPadding: const EdgeInsets.all(20),
-            child: Form(
-              key: _forgotKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      splashRadius: 24,
-                      onPressed: () => print("pressed !"), 
-                      icon: FaIcon(
-                        FontAwesomeIcons.arrowLeftLong,
-                        size: 24, 
-                        color: Theme.of(context).backgroundColor
-                      )
-                    ),
-                  ),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: isResetting ? "Create new password\n" : (emailSent ? "Verification\n" : "Reset password\n"),
-                      style: Theme.of(context).textTheme.headlineLarge,
-                      children: [
-                        TextSpan(
-                            text: isResetting ? "Your new password must be different from previous used passwords." : 
-                              (emailSent ? "Enter the 6-digit code sent to the email you specified before." :
-                              "Enter the email associated with your account and we will send an email with instructions to reset your password."),
-                            style: Theme.of(context).textTheme.bodyMedium),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: screen.width * 0.05),
-                  if (!emailSent || isResetting) CustomInputField(
-                    onSaved: (val) => isResetting ? newPassword = val ?? "" : email = val ?? "",
-                    obscureText: isResetting,
-                    inputType: isResetting ? TextInputType.visiblePassword : TextInputType.emailAddress,
-                    prefixIcon: isResetting ? Icons.password_outlined : Icons.email_outlined,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    placeholder: isResetting ? "New Password" : "Email",
-                  ),
-                  if (isResetting) CustomInputField(
-                    onSaved: (val) => print("Password : $val | $newPassword"),
-                    obscureText: true,
-                    inputType: TextInputType.visiblePassword,
-                    prefixIcon: Icons.lock_rounded,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    placeholder: "Confirm Password",
-                  ),
-                  if (!emailSent) SizedBox(height: screen.width * 0.05),
-                  if (emailSent && !isResetting) SizedBox(
-                    height: 68,
-                    child: Pinput(
-                      length: 6,
-                      defaultPinTheme: customPinTheme,
-                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-                      animationCurve: Curves.easeInOut,
-                      onCompleted: (pin) {
-                        if (pin == "555555") {
-                          print("validato !");
-                          setState(() => isResetting = true);
-                        }
-                      },
-                      focusedPinTheme: customPinTheme.copyWith(
-                        width: 68,
-                        height: 68,
-                        decoration: customPinTheme.decoration!.copyWith(
-                          border: Border.all(color: mainLight, width: 2),
-                        ),
+              scrollPadding:
+                  const EdgeInsets.only(bottom: 20, left: 5, top: 5, right: 5),
+              boxPadding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+              absoluteChild: Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                    splashRadius: 24,
+                    onPressed: () => Navigator.pop(context),
+                    icon: FaIcon(FontAwesomeIcons.arrowLeftLong,
+                        size: 24, color: Theme.of(context).backgroundColor)),
+              ),
+              child: Form(
+                key: _forgotKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: isResetting
+                            ? "Create a new password\n"
+                            : (emailSent
+                                ? "Verification\n"
+                                : "Reset password\n"),
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        children: [
+                          TextSpan(
+                              text: isResetting
+                                  ? "Your new password must be different from previous used passwords."
+                                  : (emailSent
+                                      ? "Enter the 6-digit code sent to the email you specified before."
+                                      : "Enter the email associated with your account and we will send an email with instructions to reset your password."),
+                              style: Theme.of(context).textTheme.bodyMedium),
+                        ],
                       ),
                     ),
-                  ),
-                  if (emailSent) SizedBox(height: screen.width * 0.05),
-                  CustomButton(
-                    onPressed: () {
-                      if (isResetting) {
-                        print("aggiorna la password nel database");
-                      } else if (_forgotKey.currentState!.validate() && !emailSent) {
+                    SizedBox(height: screen.width * 0.05),
+                    if (!emailSent || isResetting)
+                      CustomInputField(
+                        onSaved: (val) => isResetting
+                            ? newPassword = val ?? ""
+                            : email = val ?? "",
+                        obscureText: isResetting,
+                        copyPaste: false,
+                        inputType: isResetting
+                            ? TextInputType.visiblePassword
+                            : TextInputType.emailAddress,
+                        prefixIcon: isResetting
+                            ? Icons.password_outlined
+                            : Icons.email_outlined,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        placeholder: isResetting ? "New Password" : "Email",
+                      ),
+                    if (isResetting)
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomInputField(
+                              onSaved: (val) => confirmPassword = val ?? "",
+                              obscureText: true,
+                              copyPaste: false,
+                              inputType: TextInputType.visiblePassword,
+                              prefixIcon: Icons.lock_rounded,
+                              backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                              placeholder: "Confirm Password",
+                            ),
+                            if (noPasswordMatch) const SizedBox(height: 10),
+                            if (noPasswordMatch)
+                              Text("The passwords must match !",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(color: Colors.red)),
+                          ]),
+                    if (!emailSent) SizedBox(height: screen.width * 0.05),
+                    if (emailSent && !isResetting)
+                      SizedBox(
+                        height: 68,
+                        child: Pinput(
+                          length: 6,
+                          defaultPinTheme: customPinTheme,
+                          androidSmsAutofillMethod:
+                              AndroidSmsAutofillMethod.smsUserConsentApi,
+                          animationCurve: Curves.easeInOut,
+                          onCompleted: (pin) {
+                            if (pin == "555555") {
+                              print("validato !");
+                              setState(() => isResetting = true);
+                            }
+                          },
+                          focusedPinTheme: customPinTheme.copyWith(
+                            width: 68,
+                            height: 68,
+                            decoration: customPinTheme.decoration!.copyWith(
+                              border: Border.all(color: mainLight, width: 2),
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (emailSent) SizedBox(height: screen.width * 0.05),
+                    CustomButton(
+                      onPressed: () {
                         _forgotKey.currentState!.save();
-                        print("Email : $email");
-                        setState(() => emailSent = true);
-                      } else if (emailSent) { // mettere anche timer prima di poter reinviare il codice
-    
-                      }
-                    },
-                    text: isResetting ? "Confirm reset" : (emailSent ? "Send again" : "Send instructions"),
-                    textStyle: Theme.of(context).textTheme.titleMedium,
-                    startColor: mainLight,
-                    endColor: mainDark,
-                  ),
-                  SizedBox(height: screen.width * 0.05),
-                  SvgPicture.asset(
-                    isResetting ? "assets/new_password.svg" : (emailSent ? "assets/new_email.svg" : "assets/forgot_password.svg"),
-                    width: emailSent ? screen.width / 2 : screen.width,
-                    semanticsLabel: isResetting ? "New password illustration" : (emailSent ? "Email sent illustration" : "Forgot password illustration")
-                  ),
-                ],
-              ),
-            )
-          ),
+                        if (_forgotKey.currentState!.validate() &&
+                            isResetting &&
+                            newPassword != confirmPassword) {
+                          setState(() => noPasswordMatch = true);
+                        } else if (_forgotKey.currentState!.validate() &&
+                            isResetting &&
+                            newPassword == confirmPassword) {
+                          // TODO: aggiornare la password nel database
+                          Navigator.pop(context);
+                        } else if (_forgotKey.currentState!.validate() &&
+                            !emailSent) {
+                          setState(() => emailSent = true);
+                        } else if (emailSent) {
+                          // TODO: mettere timer prima di poter rimandare la mail
+                        }
+                      },
+                      text: isResetting
+                          ? "Confirm reset"
+                          : (emailSent ? "Send again" : "Send instructions"),
+                      textStyle: Theme.of(context).textTheme.titleMedium,
+                      startColor: mainLight,
+                      endColor: mainDark,
+                    ),
+                    SizedBox(height: screen.width * 0.05),
+                    SvgPicture.asset(
+                        isResetting
+                            ? "assets/new_password.svg"
+                            : (emailSent
+                                ? "assets/new_email.svg"
+                                : "assets/forgot_password.svg"),
+                        width: emailSent ? screen.width / 2 : screen.width,
+                        semanticsLabel: isResetting
+                            ? "New password illustration"
+                            : (emailSent
+                                ? "Email sent illustration"
+                                : "Forgot password illustration")),
+                  ],
+                ),
+              )),
         ),
       ),
     );

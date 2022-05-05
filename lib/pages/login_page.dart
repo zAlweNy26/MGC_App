@@ -21,12 +21,12 @@ class _LoginPageState extends State<LoginPage> {
   final birthDateController = TextEditingController();
   final genderController = TextEditingController();
   final _loginKey = GlobalKey<FormState>();
+  List<Text> gendersList = const [Text("Male"), Text("Female"), Text("Transgender"), Text("Non-binary")];
   String email = "", password = "", gender = "", firstName = "", lastName = "", birthDate = "";
   bool isRegistering = false, rememberLogin = false, privacyAccepted = false;
 
   @override
   Widget build(BuildContext context) {
-    List<Text> gendersList = [Text("Male"), Text("Female"), Text("Transgender"), Text("Non-binary")];
     Size screen = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
-                                  ?.copyWith(
+                                  !.copyWith(
                                       color: mainLight,
                                       fontWeight: FontWeight.bold)),
                         ],
@@ -287,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: screen.width * 0.05),
                     CustomButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
                         if (_loginKey.currentState!.validate()) {
                           _loginKey.currentState!.save();
                           print("Email : $email");

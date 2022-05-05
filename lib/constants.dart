@@ -28,6 +28,8 @@ ThemeData lightTheme = ThemeData(
     headlineLarge: GoogleFonts.nunito(
         color: appBlack, fontSize: 44, fontWeight: FontWeight.bold),
     headlineMedium: GoogleFonts.nunito(
+        color: appBlack, fontSize: 32, fontWeight: FontWeight.bold),
+    headlineSmall: GoogleFonts.nunito(
         color: appBlack, fontSize: 20, fontWeight: FontWeight.bold),
     titleMedium: GoogleFonts.nunito(
         color: appWhite, fontSize: 20, fontWeight: FontWeight.bold),
@@ -63,6 +65,8 @@ ThemeData darkTheme = ThemeData(
     headlineLarge: GoogleFonts.nunito(
         color: appWhite, fontSize: 44, fontWeight: FontWeight.bold),
     headlineMedium: GoogleFonts.nunito(
+        color: appWhite, fontSize: 32, fontWeight: FontWeight.bold),
+    headlineSmall: GoogleFonts.nunito(
         color: appWhite, fontSize: 20, fontWeight: FontWeight.bold),
     titleMedium: GoogleFonts.nunito(
         color: appBlack, fontSize: 20, fontWeight: FontWeight.bold),

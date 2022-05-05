@@ -12,7 +12,7 @@ class CustomInputField extends StatefulWidget {
   final TextBaseline? textBaseline;
   final FontStyle fontStyle;
   final FontWeight fontWeight;
-  final bool autofocus, autocorrect, enabled, obscureText, isShadow;
+  final bool autoFocus, autoCorrect, enabled, obscureText, isShadow, copyPaste;
   final int? maxLength, minLines, maxLines;
   final ValueChanged<String>? onChanged, onSubmitted;
   final ValueChanged<String?>? onSaved;
@@ -37,8 +37,9 @@ class CustomInputField extends StatefulWidget {
       this.fontFamily,
       this.fontStyle = FontStyle.normal,
       this.fontWeight = FontWeight.normal,
-      this.autofocus = false,
-      this.autocorrect = false,
+      this.autoFocus = false,
+      this.autoCorrect = false,
+      this.copyPaste = true,
       this.enabled = true,
       this.maxLength,
       this.maxLines,
@@ -115,8 +116,9 @@ class _CustomInputFieldState extends State<CustomInputField> {
         obscureText: widget.obscureText && isObscured,
         keyboardType: widget.inputType,
         cursorColor: mainLight,
-        autofocus: widget.autofocus,
-        autocorrect: widget.autocorrect,
+        enableInteractiveSelection: widget.copyPaste,
+        autofocus: widget.autoFocus,
+        autocorrect: widget.autoCorrect,
         focusNode: _focusNode,
         onChanged: widget.onChanged,
         onSaved: widget.onSaved,

@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
         color: mainLight,
         height: 56,
         backgroundColor: Colors.transparent,
-        animationDuration: const Duration(milliseconds: 300),
+        animationDuration: const Duration(milliseconds: 250),
         index: currentPage,
         items: [
           Padding(
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: (index) {
           setState(() => currentPage = index);
-          pagesController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          pagesController.animateToPage(index, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);
         },
       ),
     );

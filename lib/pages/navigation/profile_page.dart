@@ -14,7 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return PaddedScrollView(
       scrollPadding: const EdgeInsets.only(bottom: 76),
-      boxPadding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      boxPadding: const EdgeInsets.only(top: 5, left: 10, right: 10),
       absoluteChild: Align(
         alignment: Alignment.centerRight,
         child: IconButton(
@@ -30,11 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            "Profile Page",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineLarge
-          ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              "Profile Page",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium
+            ),
+          )
           /*Expanded(
             child: Material(
               shadowColor: Theme.of(context).backgroundColor,
