@@ -1,6 +1,6 @@
 {
-    "name": "flymeet",
-    "short_name": "flymeet",
+    "name": "mgclinic",
+    "short_name": "mgclinic",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

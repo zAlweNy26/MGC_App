@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flymeet/constants.dart';
+import 'package:mgclinic/constants.dart';
 
 class CustomButton extends StatefulWidget {
   final Color? backgroundColor, borderColor, startColor, endColor;
@@ -40,22 +40,23 @@ class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return widget.onlyIcon
-      ? Material(
-        clipBehavior: Clip.antiAlias,
-        elevation: 3,
-        color: widget.backgroundColor,
-        borderRadius: BorderRadius.circular(widget.radius),
-        child: IconButton(
-          iconSize: widget.radius,
-          splashRadius: widget.radius,
-          color: mainLight,
-          onPressed: widget.onPressed,
-          icon: widget.icon!,
-        ),
-      ): DecoratedBox(
-        decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.radius),
-        /*boxShadow: const [BoxShadow(
+        ? Material(
+            clipBehavior: Clip.antiAlias,
+            elevation: 3,
+            color: widget.backgroundColor,
+            borderRadius: BorderRadius.circular(widget.radius),
+            child: IconButton(
+              iconSize: widget.radius,
+              splashRadius: widget.radius,
+              color: primaryColor,
+              onPressed: widget.onPressed,
+              icon: widget.icon!,
+            ),
+          )
+        : DecoratedBox(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(widget.radius),
+                /*boxShadow: const [BoxShadow(
           color: Color(0xFFCACACA),
           offset: Offset(20, 20),
           blurRadius: 60,
@@ -65,34 +66,32 @@ class _CustomButtonState extends State<CustomButton> {
           offset: Offset(-20, -20),
           blurRadius: 60
         )],*/
-        gradient: widget.startColor != null && widget.endColor != null
-            ? LinearGradient(
-                colors: [widget.startColor!, widget.endColor!])
-            : LinearGradient(colors: [
-                widget.backgroundColor!,
-                widget.backgroundColor!
-              ])),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          padding: MaterialStateProperty.all(widget.padding),
-          overlayColor: MaterialStateProperty.all(mainDark),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.radius),
-            side: BorderSide(
-              color: widget.borderColor!,
-              width: widget.borderWidth
-            )
-          )),
-          backgroundColor: MaterialStateProperty.all(widget.backgroundColor!),
-        ),
-        onPressed: widget.onPressed,
-        child: Text(
-          widget.text,
-          textAlign: TextAlign.center,
-          style: widget.textStyle,
-        ),
-      )
-    );
+                gradient: widget.startColor != null && widget.endColor != null
+                    ? LinearGradient(
+                        colors: [widget.startColor!, widget.endColor!])
+                    : LinearGradient(colors: [
+                        widget.backgroundColor!,
+                        widget.backgroundColor!
+                      ])),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+                padding: MaterialStateProperty.all(widget.padding),
+                overlayColor: MaterialStateProperty.all(secondaryColor),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(widget.radius),
+                    side: BorderSide(
+                        color: widget.borderColor!,
+                        width: widget.borderWidth))),
+                backgroundColor:
+                    MaterialStateProperty.all(widget.backgroundColor!),
+              ),
+              onPressed: widget.onPressed,
+              child: Text(
+                widget.text,
+                textAlign: TextAlign.center,
+                style: widget.textStyle,
+              ),
+            ));
   }
 }

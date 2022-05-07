@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flymeet/constants.dart';
+import 'package:mgclinic/constants.dart';
 
 class CustomInputField extends StatefulWidget {
   final double borderRadius;
@@ -99,8 +99,9 @@ class _CustomInputFieldState extends State<CustomInputField> {
           bool pswValid = RegExp(
                   r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
               .hasMatch(val);
-          if ((!pswValid && widget.inputType == TextInputType.visiblePassword) ||
-            (!emailValid && widget.inputType == TextInputType.emailAddress)) {
+          if ((!pswValid &&
+                  widget.inputType == TextInputType.visiblePassword) ||
+              (!emailValid && widget.inputType == TextInputType.emailAddress)) {
             setState(() {
               errorText = "Not valid";
             });
@@ -115,7 +116,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         controller: widget.controller,
         obscureText: widget.obscureText && isObscured,
         keyboardType: widget.inputType,
-        cursorColor: mainLight,
+        cursorColor: primaryColor,
         enableInteractiveSelection: widget.copyPaste,
         autofocus: widget.autoFocus,
         autocorrect: widget.autoCorrect,
@@ -142,37 +143,39 @@ class _CustomInputFieldState extends State<CustomInputField> {
           labelStyle: Theme.of(context)
               .textTheme
               .titleSmall
-              ?.copyWith(color: mainLight),
+              ?.copyWith(color: primaryColor),
           errorStyle: const TextStyle(height: 0),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           floatingLabelStyle: Theme.of(context)
               .textTheme
               .titleSmall
-              ?.copyWith(color: mainLight),
+              ?.copyWith(color: primaryColor),
           hintStyle: Theme.of(context)
               .textTheme
-              .labelMedium!.copyWith(color: Theme.of(context).colorScheme.surface),
+              .labelMedium!
+              .copyWith(color: Theme.of(context).colorScheme.surface),
           hintText: "Your ${widget.placeholder}...",
           focusedBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.all(Radius.circular(widget.borderRadius)),
-              borderSide: BorderSide(width: 2, color: mainLight)),
+              borderSide: BorderSide(width: 2, color: primaryColor)),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.all(Radius.circular(widget.borderRadius)),
-              borderSide: BorderSide(width: 2, color: mainLight)),
+              borderSide: BorderSide(width: 2, color: primaryColor)),
           border: InputBorder.none,
           /*prefix: widget.prefixIcon != null ? Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Icon(
               widget.prefixIcon,
-              color: isFocus ? mainLight : Theme.of(context).backgroundColor
+              color: isFocus ? primaryColor : Theme.of(context).backgroundColor
             ),
           ) : null,*/
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon,
-                  color:
-                      isFocus ? mainLight : Theme.of(context).backgroundColor)
+                  color: isFocus
+                      ? primaryColor
+                      : Theme.of(context).backgroundColor)
               : null,
           suffixIcon: widget.obscureText
               ? IconButton(
@@ -183,14 +186,14 @@ class _CustomInputFieldState extends State<CustomInputField> {
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined,
                       color: isFocus
-                          ? mainLight
+                          ? primaryColor
                           : Theme.of(context).backgroundColor))
               : (widget.suffixIcon != null
                   ? IconButton(
                       onPressed: widget.onClickSuffix,
                       icon: Icon(widget.suffixIcon,
                           color: isFocus
-                              ? mainLight
+                              ? primaryColor
                               : Theme.of(context).backgroundColor))
                   : null),
         ),

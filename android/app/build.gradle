@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "it.alwe.flymeet"
+        applicationId "en.alwe.mgclinic"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

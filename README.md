@@ -1,5 +1,5 @@
-# FlyMeet
-Are you alone but want to travel in company? With FlyMeet you can meet someone with your same interests and ideas of travel !
+# MG Clinic
+Are you alone but want to travel in company? With MG Clinic you can meet someone with your same interests and ideas of travel !
 
 ## Come avviarlo :
     - 'flutter run'

@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "it.alwe" "\0"
-            VALUE "FileDescription", "FlyMeet" "\0"
+            VALUE "CompanyName", "en.alwe" "\0"
+            VALUE "FileDescription", "MG Clinic" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "FlyMeet" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 it.alwe. All rights reserved." "\0"
-            VALUE "OriginalFilename", "FlyMeet.exe" "\0"
-            VALUE "ProductName", "FlyMeet" "\0"
+            VALUE "InternalName", "MG Clinic" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 en.alwe. All rights reserved." "\0"
+            VALUE "OriginalFilename", "MG Clinic.exe" "\0"
+            VALUE "ProductName", "MG Clinic" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

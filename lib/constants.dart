@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Color mainLight = const Color(0xFFF50057);
-Color mainDark = const Color(0xFFD0004A);
+Color primaryColor = const Color(0xFF008AD4);
+Color secondaryColor = const Color(0xFFFAB72B);
 Color appWhite = Colors.grey.shade200;
 Color appBlack = Colors.grey.shade900;
 
@@ -10,19 +10,19 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: appWhite,
   backgroundColor: appBlack,
-  primaryColor: mainLight,
+  primaryColor: primaryColor,
   colorScheme: ColorScheme(
     brightness: Brightness.light, 
-    primary: mainLight, 
+    primary: primaryColor, 
     onPrimary: appWhite, 
-    secondary: mainDark, 
+    secondary: secondaryColor, 
     onSecondary: appBlack, 
     error: Colors.red, 
     onError: appBlack, 
     background: appWhite, 
     onBackground: appBlack,
-    surface: darken(appWhite, 20),
-    onSurface: lighten(appBlack, 20)
+    surface: appWhite,
+    onSurface: appBlack
   ),
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.nunito(
@@ -35,6 +35,7 @@ ThemeData lightTheme = ThemeData(
         color: appWhite, fontSize: 20, fontWeight: FontWeight.bold),
     titleSmall: GoogleFonts.nunito(
         color: appBlack, fontSize: 16, fontWeight: FontWeight.bold),
+    labelLarge: GoogleFonts.nunito(color: appWhite, fontSize: 16),
     labelMedium: GoogleFonts.nunito(color: appBlack, fontSize: 16),
     labelSmall: GoogleFonts.nunito(color: appBlack, fontSize: 12),
     bodyLarge: GoogleFonts.nunito(color: appBlack, fontSize: 20),
@@ -47,19 +48,19 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   scaffoldBackgroundColor: appBlack,
   backgroundColor: appWhite,
-  primaryColor: mainLight,
+  primaryColor: primaryColor,
   colorScheme: ColorScheme(
     brightness: Brightness.dark, 
-    primary: mainLight, 
+    primary: primaryColor, 
     onPrimary: appWhite, 
-    secondary: mainDark, 
+    secondary: secondaryColor, 
     onSecondary: appBlack, 
     error: Colors.red, 
     onError: appBlack, 
     background: appWhite, 
     onBackground: appBlack,
-    surface: darken(appWhite, 20),
-    onSurface: lighten(appBlack, 20)
+    surface: appWhite,
+    onSurface: appBlack
   ),
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.nunito(
@@ -72,6 +73,7 @@ ThemeData darkTheme = ThemeData(
         color: appBlack, fontSize: 20, fontWeight: FontWeight.bold),
     titleSmall: GoogleFonts.nunito(
         color: appWhite, fontSize: 16, fontWeight: FontWeight.bold),
+    labelLarge: GoogleFonts.nunito(color: appBlack, fontSize: 16),
     labelMedium: GoogleFonts.nunito(color: appWhite, fontSize: 16),
     labelSmall: GoogleFonts.nunito(color: appWhite, fontSize: 12),
     bodyLarge: GoogleFonts.nunito(color: appWhite, fontSize: 20),
