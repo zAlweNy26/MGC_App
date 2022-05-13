@@ -4,7 +4,7 @@ import 'package:mgclinic/constants.dart';
 class CustomInputField extends StatefulWidget {
   final double borderRadius;
   final Color backgroundColor, textColor;
-  final String? placeholder, fontFamily;
+  final String placeholder, hint;
   final IconData? prefixIcon, suffixIcon;
   final TextInputType inputType;
   final EdgeInsets textPadding;
@@ -25,7 +25,7 @@ class CustomInputField extends StatefulWidget {
       this.prefixIcon,
       this.controller,
       this.suffixIcon,
-      this.textPadding = const EdgeInsets.only(left: 10, bottom: 5, right: 10),
+      this.textPadding = const EdgeInsets.symmetric(horizontal: 15),
       this.obscureText = false,
       this.backgroundColor = Colors.transparent,
       this.borderRadius = 20,
@@ -34,7 +34,7 @@ class CustomInputField extends StatefulWidget {
       this.isShadow = true,
       this.onClickSuffix,
       this.textBaseline,
-      this.fontFamily,
+      this.hint = "",
       this.fontStyle = FontStyle.normal,
       this.fontWeight = FontWeight.normal,
       this.autoFocus = false,
@@ -99,9 +99,11 @@ class _CustomInputFieldState extends State<CustomInputField> {
           bool pswValid = RegExp(
                   r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
               .hasMatch(val);
+          bool phoneValid = RegExp(r"^(?:[+0]9)?[0-9]{10}$").hasMatch(val);
           if ((!pswValid &&
                   widget.inputType == TextInputType.visiblePassword) ||
-              (!emailValid && widget.inputType == TextInputType.emailAddress)) {
+              (!emailValid && widget.inputType == TextInputType.emailAddress) ||
+              (!phoneValid && widget.inputType == TextInputType.phone)) {
             setState(() {
               errorText = "Not valid";
             });
@@ -112,7 +114,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
           });
           return null;
         },
-        style: Theme.of(context).textTheme.bodyMedium,
+        style: Theme.of(context).textTheme.labelMedium,
         controller: widget.controller,
         obscureText: widget.obscureText && isObscured,
         keyboardType: widget.inputType,
@@ -138,8 +140,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
           contentPadding: widget.textPadding,
-          labelText: widget.placeholder! +
-              (errorText.isNotEmpty ? " - $errorText" : ""),
+          labelText: widget.placeholder + (errorText.isNotEmpty ? " - $errorText" : ""),
           labelStyle: Theme.of(context)
               .textTheme
               .titleSmall
@@ -152,9 +153,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
               ?.copyWith(color: primaryColor),
           hintStyle: Theme.of(context)
               .textTheme
-              .labelMedium!
-              .copyWith(color: Theme.of(context).colorScheme.surface),
-          hintText: "Your ${widget.placeholder}...",
+              .labelMedium,
+          hintText: widget.hint.isEmpty ? "Your ${widget.placeholder}..." : widget.hint,
           focusedBorder: OutlineInputBorder(
               borderRadius:
                   BorderRadius.all(Radius.circular(widget.borderRadius)),

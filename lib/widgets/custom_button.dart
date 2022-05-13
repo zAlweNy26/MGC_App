@@ -18,7 +18,7 @@ class CustomButton extends StatefulWidget {
       this.text = "",
       this.icon,
       this.onlyIcon = false,
-      this.padding = const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      this.padding = const EdgeInsets.all(15),
       this.textStyle = const TextStyle(fontSize: 24, color: Colors.grey),
       this.backgroundColor = Colors.transparent,
       this.radius = 20,
@@ -77,7 +77,7 @@ class _CustomButtonState extends State<CustomButton> {
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all(0),
                 padding: MaterialStateProperty.all(widget.padding),
-                overlayColor: MaterialStateProperty.all(secondaryColor),
+                overlayColor: MaterialStateProperty.all(darken(primaryColor, 20)),
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(widget.radius),
                     side: BorderSide(

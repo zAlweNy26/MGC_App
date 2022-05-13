@@ -7,8 +7,8 @@ class PaddedScrollView extends StatefulWidget {
 
   const PaddedScrollView({
     Key? key,
-    required this.scrollPadding,
     required this.child,
+    this.scrollPadding = const EdgeInsets.all(0),
     this.absoluteChild,
     this.boxPadding = const EdgeInsets.all(0),
     this.physics = const BouncingScrollPhysics()

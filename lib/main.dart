@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:mgclinic/constants.dart';
-import 'package:mgclinic/pages/home_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'pages/drawer/conditions_page.dart';
+import 'pages/home_page.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
@@ -29,13 +30,13 @@ Future<void> main() async {
 class Main extends StatelessWidget {
   final SharedPreferences sharedPreferences;
   final AdaptiveThemeMode? savedThemeMode;
-  final PackageInfo? packageInfo;
+  final PackageInfo packageInfo;
 
   const Main(
       {Key? key,
       required this.sharedPreferences,
-      this.savedThemeMode,
-      this.packageInfo})
+      required this.packageInfo,
+      this.savedThemeMode})
       : super(key: key);
 
   @override
@@ -56,7 +57,12 @@ class Main extends StatelessWidget {
               onGenerateRoute: (settings) {
                 switch (settings.name) {
                   case '/':
-                    return PageTransition(child: const HomePage(), type: PageTransitionType.fade);
+                    return PageTransition(child: HomePage(
+                      sharedPreferences: sharedPreferences,
+                      packageInfo: packageInfo,
+                    ), type: PageTransitionType.fade);
+                  case '/conditions':
+                    return PageTransition(child: const ConditionsPage(), type: PageTransitionType.fade);
                   default:
                     return null;
                 }
