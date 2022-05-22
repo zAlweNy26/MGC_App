@@ -10,6 +10,7 @@ import 'package:mgclinic/pages/navigation/wallets_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   final SharedPreferences sharedPreferences;
@@ -28,116 +29,126 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPage = 1;
   bool isDark = false;
-  static const List<Widget> navPages = [
-    BookingPage(),
-    InfoPage(),
-    LocationsPage(),
-    WalletsPage()
-  ];
   final pagesController = PageController(initialPage: 1);
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  void _launchUrl(Uri uri) async {
+    if (!await launchUrl(uri)) throw 'Could not launch $uri';
+  }
+
   @override
   Widget build(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
-    EdgeInsets partialPadding = MediaQuery.of(context).viewPadding;
-
-    AppBar myAppBar = AppBar(
-      centerTitle: true,
-      backgroundColor: primaryColor,
-      elevation: 5,
-      leading: IconButton(
-        tooltip: "Open sidebar menu",
-        splashRadius: 24,
-        icon: FaIcon(
-          FontAwesomeIcons.bars,
-          color: Theme.of(context).scaffoldBackgroundColor),
-        onPressed: () => _scaffoldKey.currentState!.openDrawer()
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: IconButton(
-            splashRadius: 24,
-              onPressed: () {
-                if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark) {
-                  AdaptiveTheme.of(context).setLight();
-                } else {
-                  AdaptiveTheme.of(context).setDark();
-                }
-              },
-              tooltip: "Change current theme",
-              icon: FaIcon(
-                  AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark
-                      ? FontAwesomeIcons.solidSun
-                      : FontAwesomeIcons.solidMoon,
-                  color: Theme.of(context).backgroundColor)),
-        ),
-      ],
-      title: Text("Malta & Gozo Clinic",
-          style: Theme.of(context).textTheme.titleMedium),
-    );
+    List<Widget> navPages = [
+      const BookingPage(),
+      const InfoPage(),
+      const LocationsPage(),
+      WalletsPage(sharedPreferences: widget.sharedPreferences)
+    ];
 
     return Scaffold(
       key: _scaffoldKey,
-      body: SizedBox(
-          height: screen.height - myAppBar.preferredSize.height - 52, // 52 = bottomnavbar height
-          width: screen.width - partialPadding.left - partialPadding.right,
-          child: PageView(
-              physics: const BouncingScrollPhysics(),
-              onPageChanged: (value) => setState(() => currentPage = value),
-              controller: pagesController,
-              children: navPages)),
-      appBar: myAppBar,
+      body: SafeArea(
+        bottom: false,
+        minimum: const EdgeInsets.only(bottom: 52),
+        child: PageView(
+          physics: const BouncingScrollPhysics(),
+          onPageChanged: (value) => setState(() => currentPage = value),
+          controller: pagesController,
+          children: navPages
+        ),
+      ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: primaryColor,
+        elevation: 5,
+        leading: IconButton(
+          tooltip: "Open sidebar menu",
+          splashRadius: 24,
+          icon: FaIcon(
+            FontAwesomeIcons.bars,
+            color: Theme.of(context).scaffoldBackgroundColor),
+          onPressed: () => _scaffoldKey.currentState!.openDrawer()
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              splashRadius: 24,
+                onPressed: () {
+                  if (AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark) {
+                    AdaptiveTheme.of(context).setLight();
+                  } else {
+                    AdaptiveTheme.of(context).setDark();
+                  }
+                },
+                tooltip: "Change current theme",
+                icon: FaIcon(
+                    AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark
+                        ? FontAwesomeIcons.solidSun
+                        : FontAwesomeIcons.solidMoon,
+                    color: Theme.of(context).backgroundColor)),
+          ),
+        ],
+        title: Text("Malta & Gozo Clinic",
+            style: Theme.of(context).textTheme.titleMedium),
+      ),
       drawer: Drawer(
         elevation: 10,
         semanticLabel: "Sidebar menu",
         backgroundColor: secondaryColor,
-        child: ListView(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-              trailing: IconButton(
-                onPressed: () => Navigator.pop(context),
-                splashRadius: 24,
-                iconSize: 24,
-                padding: const EdgeInsets.all(0),
-                tooltip: "Go back",
-                icon: FaIcon(FontAwesomeIcons.arrowRightLong, color: Theme.of(context).scaffoldBackgroundColor),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:[
+              Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                    trailing: IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      splashRadius: 24,
+                      iconSize: 24,
+                      padding: const EdgeInsets.all(0),
+                      tooltip: "Go back",
+                      icon: FaIcon(FontAwesomeIcons.arrowRightLong, color: Theme.of(context).scaffoldBackgroundColor),
+                    ),
+                  ),
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.solidCircleQuestion, color: Theme.of(context).scaffoldBackgroundColor),
+                    onTap: () => _launchUrl(Uri.parse("http://maltabackpainclinic.com/patients/f-a-q/")),
+                    title: Text("F.A.Q.",
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.solidFileLines, color: Theme.of(context).scaffoldBackgroundColor),
+                    onTap: () => Navigator.pushNamed(context, "/feesdetails"),
+                    title: Text("Fees details",
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.solidCommentDots, color: Theme.of(context).scaffoldBackgroundColor),
+                    onTap: () => _launchUrl(Uri.parse("http://maltabackpainclinic.com/patients/feedback/")),
+                    title: Text("Feedbacks",
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
+                  ),                                                                                                                        
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.solidStarHalfStroke, color: Theme.of(context).scaffoldBackgroundColor),
+                    onTap: () => Navigator.pushNamed(context, "/conditions"),
+                    title: Text("Conditions",
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
-            ),
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.solidCircleQuestion, color: Theme.of(context).scaffoldBackgroundColor),
-              onTap: () => print("faq"),
-              title: Text("F.A.Q.",
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
-            ),
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.solidFileLines, color: Theme.of(context).scaffoldBackgroundColor),
-              onTap: () => print("details"),
-              title: Text("Fees details",
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
-            ),
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.solidCommentDots, color: Theme.of(context).scaffoldBackgroundColor),
-              onTap: () => print("feedbacks"),
-              title: Text("Feedbacks",
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
-            ),
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.solidClock, color: Theme.of(context).scaffoldBackgroundColor),
-              onTap: () => print("clinic"),
-              title: Text("Clinics hours",
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
-            ),                                                                                                                         
-            ListTile(
-              leading: FaIcon(FontAwesomeIcons.solidStarHalfStroke, color: Theme.of(context).scaffoldBackgroundColor),
-              onTap: () => Navigator.pushNamed(context, "/conditions"),
-              title: Text("Conditions",
-              style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                leading: Image.asset("assets/logo.png", width: 48, height: 48),
+                title: Text("Created by zAlweNy26\nv. ${widget.packageInfo.version}",
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).scaffoldBackgroundColor)),
+              ),
+            ],
+          ),
+        )
       ),
       extendBody: true,
       bottomNavigationBar: CurvedNavigationBar(

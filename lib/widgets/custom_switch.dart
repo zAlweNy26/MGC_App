@@ -12,11 +12,12 @@ class CustomSwitch extends FormField<bool> {
     Color selectedIconColor = Colors.black,
     Color borderColor = Colors.grey,
     IconData checkIcon = Icons.check,
+    bool isRequired = true,
     Widget? trailing
   }) : super(key: key, 
     onSaved: onSaved,
     validator: (val) {
-      if (val == null || val == false) {
+      if (val == null || val == !isRequired) {
         return "Required";
       }
     },

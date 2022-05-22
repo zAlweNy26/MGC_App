@@ -7,7 +7,6 @@ import 'package:mgclinic/widgets/custom_button.dart';
 import 'package:mgclinic/widgets/custom_input.dart';
 import 'package:mgclinic/widgets/custom_switch.dart';
 import 'package:mgclinic/widgets/filterable_bottompicker.dart';
-import 'package:mgclinic/widgets/padded_scrollview.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
@@ -34,7 +33,7 @@ class _BookingPageState extends State<BookingPage> {
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
 
-    return PaddedScrollView(
+    return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Padding(
           padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
@@ -102,6 +101,7 @@ class _BookingPageState extends State<BookingPage> {
                           child: Text(text, style: Theme.of(context).textTheme.labelMedium),
                         );
                       },
+                      onChanged: (val) => setState(() => clinic = val ?? ""),
                       popupTitle: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text("Choose a clinic :", style: Theme.of(context)
@@ -129,7 +129,6 @@ class _BookingPageState extends State<BookingPage> {
                         hintStyle: Theme.of(context).textTheme.labelMedium,
                         hintText: "Choose a clinic...",
                       ),
-                      onSaved: (val) => clinic = val ?? "",
                       validator: (String? item) {
                         if (item == null) {
                           setState(() {
@@ -153,6 +152,7 @@ class _BookingPageState extends State<BookingPage> {
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     borderRadius: BorderRadius.circular(20),
                     child: DropdownSearch<String>(
+                      enabled: clinic.isNotEmpty,
                       mode: Mode.BOTTOM_SHEET,
                       items: const ["Free spinal check (5-10 mins)", "First consultation (30-45 mins)", 
                         "Follow up (15-20 mins)", "Deep tissue work (40 mins)"],
@@ -192,7 +192,7 @@ class _BookingPageState extends State<BookingPage> {
                         hintStyle: Theme.of(context).textTheme.labelMedium,
                         hintText: "Choose the type...",
                       ),
-                      onSaved: (val) => appointmentType = val ?? "",
+                      onChanged: (val) => setState(() => appointmentType = val ?? ""),
                       validator: (String? item) {
                         if (item == null) {
                           setState(() {
@@ -260,6 +260,7 @@ class _BookingPageState extends State<BookingPage> {
                     onSaved: (val) => rememberDetails = val ?? false,
                     borderColor: primaryColor,
                     selectedIconColor: primaryColor,
+                    isRequired: false,
                     trailing: Text(
                       "Remember my details",
                       style: Theme.of(context).textTheme.bodySmall,

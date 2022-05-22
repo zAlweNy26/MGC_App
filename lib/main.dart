@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:mgclinic/constants.dart';
+import 'package:mgclinic/pages/drawer/fees_details_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/drawer/conditions_page.dart';
 import 'pages/home_page.dart';
-//import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<void> main() async {
-  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
   final packageInfo = await PackageInfo.fromPlatform();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -63,6 +62,8 @@ class Main extends StatelessWidget {
                     ), type: PageTransitionType.fade);
                   case '/conditions':
                     return PageTransition(child: const ConditionsPage(), type: PageTransitionType.fade);
+                  case '/feesdetails':
+                    return PageTransition(child: const FeesDetailsPage(), type: PageTransitionType.fade);
                   default:
                     return null;
                 }
