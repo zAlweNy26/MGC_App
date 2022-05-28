@@ -22,10 +22,10 @@ class _InfoPageState extends State<InfoPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+          padding: const EdgeInsets.all(5),
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text("Get in touch", style: Theme.of(context).textTheme.headlineMedium)
+            child: Text("Get in touch", style: Theme.of(context).textTheme.titleLarge)
           ),
         ),
         Expanded(

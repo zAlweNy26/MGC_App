@@ -20,6 +20,7 @@ class CustomSwitch extends FormField<bool> {
       if (val == null || val == !isRequired) {
         return "Required";
       }
+      return null;
     },
     initialValue: initialValue,
     builder: (FormFieldState<bool> state) {

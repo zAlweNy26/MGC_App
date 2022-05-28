@@ -2,23 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mgclinic/constants.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CoinTale extends StatefulWidget {
   final EdgeInsets padding;
-  final String coin, title;
-  final String? subtitle;
-  final TextEditingController controller;
+  final String coin, title, subtitle;
   final VoidCallback? onTap;
   final bool isEnabled, isTextFieldEnabled;
 
   const CoinTale({
     Key? key,
     required this.coin,
-    required this.controller,
     required this.title,
-    this.subtitle,
+    this.subtitle = "",
     this.isEnabled = true,
     this.isTextFieldEnabled = false,
     this.onTap,
@@ -30,12 +26,11 @@ class CoinTale extends StatefulWidget {
 }
 
 class _CoinTaleState extends State<CoinTale> {
-  late bool _isEnabled, _isTextFieldEnabled;
+  late bool _isEnabled;
 
   @override
   void initState() {
     _isEnabled = widget.isEnabled;
-    _isTextFieldEnabled = widget.isTextFieldEnabled;
     super.initState();
   }
 
@@ -62,7 +57,7 @@ class _CoinTaleState extends State<CoinTale> {
                         padding: const EdgeInsets.all(10),
                         child: QrImage(
                           backgroundColor: Colors.white,
-                          data: widget.controller.text
+                          data: widget.subtitle
                         )
                       ),
                     ),
@@ -94,7 +89,7 @@ class _CoinTaleState extends State<CoinTale> {
                   fit: BoxFit.scaleDown,
                   child: Text(widget.title,
                       style: Theme.of(context).textTheme.titleLarge)),
-                  Text(widget.subtitle ?? "", textAlign: TextAlign.center,
+                  Text(widget.subtitle, textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.labelMedium),
                 ],

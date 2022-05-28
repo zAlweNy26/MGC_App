@@ -3,6 +3,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mgclinic/constants.dart';
+import 'package:mgclinic/pages/drawer/conditions_page.dart';
+import 'package:mgclinic/pages/drawer/fees_details_page.dart';
 import 'package:mgclinic/pages/navigation/booking_page.dart';
 import 'package:mgclinic/pages/navigation/info_page.dart';
 import 'package:mgclinic/pages/navigation/locations_page.dart';
@@ -42,7 +44,9 @@ class _HomePageState extends State<HomePage> {
       const BookingPage(),
       const InfoPage(),
       const LocationsPage(),
-      WalletsPage(sharedPreferences: widget.sharedPreferences)
+      WalletsPage(sharedPreferences: widget.sharedPreferences),
+      const ConditionsPage(),
+      const FeesDetailsPage()
     ];
 
     return Scaffold(
@@ -52,7 +56,11 @@ class _HomePageState extends State<HomePage> {
         minimum: const EdgeInsets.only(bottom: 52),
         child: PageView(
           physics: const BouncingScrollPhysics(),
-          onPageChanged: (value) => setState(() => currentPage = value),
+          onPageChanged: (value) {
+            if (value < 4) {
+              setState(() => currentPage = value);
+            }
+          },
           controller: pagesController,
           children: navPages
         ),
@@ -96,7 +104,8 @@ class _HomePageState extends State<HomePage> {
         elevation: 10,
         semanticLabel: "Sidebar menu",
         backgroundColor: secondaryColor,
-        child: SizedBox(
+        child: Container(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
           height: MediaQuery.of(context).size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +131,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ListTile(
                     leading: FaIcon(FontAwesomeIcons.solidFileLines, color: Theme.of(context).scaffoldBackgroundColor),
-                    onTap: () => Navigator.pushNamed(context, "/feesdetails"),
+                    onTap: () {
+                      pagesController.jumpToPage(5);
+                      Navigator.pop(context);
+                    },
                     title: Text("Fees details",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
                   ),
@@ -134,7 +146,10 @@ class _HomePageState extends State<HomePage> {
                   ),                                                                                                                        
                   ListTile(
                     leading: FaIcon(FontAwesomeIcons.solidStarHalfStroke, color: Theme.of(context).scaffoldBackgroundColor),
-                    onTap: () => Navigator.pushNamed(context, "/conditions"),
+                    onTap: () {
+                      pagesController.jumpToPage(4);
+                      Navigator.pop(context);
+                    },
                     title: Text("Conditions",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold)),
                   ),

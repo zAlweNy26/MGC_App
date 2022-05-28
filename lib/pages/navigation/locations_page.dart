@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mgclinic/constants.dart';
+import 'package:mgclinic/custom_gesture_recognizer.dart';
 import 'package:mgclinic/widgets/custom_tile.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LocationsPage extends StatefulWidget {
   const LocationsPage({Key? key}) : super(key: key);
@@ -11,18 +16,38 @@ class LocationsPage extends StatefulWidget {
 
 class _LocationsPageState extends State<LocationsPage> {
   @override
+   void initState() {
+     super.initState();
+     if (Platform.isAndroid) WebView.platform = AndroidWebView();
+   }
+   
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+          padding: const EdgeInsets.all(5),
           child: FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text("Find a clinic", style: Theme.of(context).textTheme.headlineMedium)
+            child: Text("Find a clinic", style: Theme.of(context).textTheme.titleLarge)
           ),
         ),
-        Expanded(child: Container()),
+        //Expanded(child: Container()),
+        Expanded(child: WebView(
+          navigationDelegate: (navigation) {
+            if (navigation.url.contains("google.com")) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+          gestureRecognizers: {
+            Factory(() => PlatformViewVerticalGestureRecognizer()),
+          },
+          gestureNavigationEnabled: true,
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: "https://www.google.com/maps/d/embed?mid=1XY2pqaNvfVth-jHVqdK_aXyEqUQ&ehbc=2E312F",
+        )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Container(

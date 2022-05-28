@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:mgclinic/constants.dart';
 import 'package:mgclinic/widgets/custom_button.dart';
@@ -36,11 +37,11 @@ class _BookingPageState extends State<BookingPage> {
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Padding(
-          padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
+          padding: const EdgeInsets.all(5),
           child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text("Book an appointment",
-                  style: Theme.of(context).textTheme.headlineMedium)),
+                  style: Theme.of(context).textTheme.titleLarge)),
         ),
         Padding(
           padding: const EdgeInsets.all(10),
@@ -219,12 +220,32 @@ class _BookingPageState extends State<BookingPage> {
                     prefixIcon: Icons.event_available,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     onTap: () {
+                      if (clinic.isEmpty) return;
+                      /*showDatePicker(
+                        context: context, 
+                        initialDate: DateTime.now().add(const Duration(days: 7)),
+                        firstDate: DateTime.now().add(const Duration(days: 7)),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      ).then((date) {
+                        if (date != null) {
+                          showTimePicker(
+                            context: context, 
+                            initialTime: TimeOfDay.now()
+                          ).then((time) {
+                            if (time != null) {
+                              setState(() {
+                                dateTime = DateFormat("dd/MM/yyyy").format(date) + " at ${time.toString().substring(10, 15)}";
+                                dateTimeController.text = dateTime;
+                              });
+                            }
+                          });
+                        }
+                      });*/
                       CustomBottomPicker.dateTime(
                           title: "Select a date and time :",
                           dismissable: true,
                           use24hFormat: true,
-                          minuteInterval: 10,
-                          hourInterval: 2,
+                          minuteInterval: 30,
                           pickerTextStyle: Theme.of(context)
                               .textTheme
                               .labelSmall!
@@ -295,16 +316,21 @@ class _BookingPageState extends State<BookingPage> {
                         flex: 2,
                         fit: FlexFit.tight,
                         child: CustomButton(
-                            onPressed: () {
-                              if (_bookKey.currentState!.validate()) {
-                                _bookKey.currentState!.save();
-                                print("Email : $email");
-                                print("Full Name : $firstName $lastName");
-                              }
-                            },
-                            text: "Book",
-                            textStyle: Theme.of(context).textTheme.titleMedium,
-                            backgroundColor: primaryColor),
+                          onPressed: () async {
+                            if (_bookKey.currentState!.validate()) {
+                              _bookKey.currentState!.save();
+                              final Email sendEmail = Email(
+                                body: '',
+                                subject: 'Appointment Booking',
+                                recipients: ["maltagozochiropractic@hotmail.com"]
+                              );
+                              await FlutterEmailSender.send(sendEmail);
+                            }
+                          },
+                          text: "Book",
+                          textStyle: Theme.of(context).textTheme.titleMedium,
+                          backgroundColor: primaryColor
+                        ),
                       ),
                       const Spacer()
                     ],
