@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mgclinic/constants.dart';
 import 'package:mgclinic/custom_gesture_recognizer.dart';
@@ -34,20 +35,22 @@ class _LocationsPageState extends State<LocationsPage> {
           ),
         ),
         //Expanded(child: Container()),
-        Expanded(child: WebView(
-          navigationDelegate: (navigation) {
-            if (navigation.url.contains("google.com")) {
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
-          },
-          gestureRecognizers: {
-            Factory(() => PlatformViewVerticalGestureRecognizer()),
-          },
-          gestureNavigationEnabled: true,
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: "https://www.google.com/maps/d/embed?mid=1XY2pqaNvfVth-jHVqdK_aXyEqUQ&ehbc=2E312F",
-        )),
+        Expanded(
+          child: WebView(
+            navigationDelegate: (navigation) {
+              if (navigation.url.contains("google.com")) {
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+            gestureRecognizers: Set()
+              ..add(Factory<VerticalDragGestureRecognizer>(() => VerticalDragGestureRecognizer()))
+              ..add(Factory<HorizontalDragGestureRecognizer>(() => HorizontalDragGestureRecognizer()))
+              ..add(Factory<TapGestureRecognizer>(() => TapGestureRecognizer())),
+            javascriptMode: JavascriptMode.unrestricted,
+            initialUrl: "https://www.google.com/maps/d/embed?mid=1XY2pqaNvfVth-jHVqdK_aXyEqUQ&ehbc=2E312F",
+          )
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Container(

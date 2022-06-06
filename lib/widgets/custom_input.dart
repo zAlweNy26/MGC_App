@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mgclinic/constants.dart';
 
 class CustomInputField extends StatefulWidget {
@@ -25,7 +28,7 @@ class CustomInputField extends StatefulWidget {
       this.prefixIcon,
       this.controller,
       this.suffixIcon,
-      this.textPadding = const EdgeInsets.symmetric(horizontal: 15),
+      this.textPadding = const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       this.obscureText = false,
       this.backgroundColor = Colors.transparent,
       this.borderRadius = 20,
@@ -55,6 +58,14 @@ class CustomInputField extends StatefulWidget {
 }
 
 class _CustomInputFieldState extends State<CustomInputField> {
+  Country selectedCountry = const Country(
+    name: "Malta",
+    flag: "🇲🇹",
+    code: "MT",
+    dialCode: "356",
+    minLength: 8,
+    maxLength: 8,
+  );
   bool isFocus = false, isObscured = true;
   String errorText = "";
 
@@ -83,7 +94,69 @@ class _CustomInputFieldState extends State<CustomInputField> {
       shadowColor: Theme.of(context).backgroundColor,
       elevation: 3,
       borderRadius: BorderRadius.circular(widget.borderRadius),
-      child: TextFormField(
+      child: widget.inputType == TextInputType.phone ?
+      IntlPhoneField(
+        initialCountryCode: "MT",
+        flagsButtonPadding: const EdgeInsets.only(left: 15),
+        showDropdownIcon: false,
+        disableLengthCheck: true,
+        dropdownDecoration: const BoxDecoration(
+          borderRadius: BorderRadius.horizontal(left: Radius.circular(15)),
+        ),
+        pickerDialogStyle: PickerDialogStyle(
+          listTileDivider: Container(),
+          countryNameStyle: Theme.of(context).textTheme.titleSmall,
+          countryCodeStyle: Theme.of(context).textTheme.titleSmall,
+          searchFieldCursorColor: primaryColor,
+          padding: const EdgeInsets.all(0),
+          searchFieldPadding: const EdgeInsets.symmetric(horizontal: 10),
+          searchFieldInputDecoration: const InputDecoration(
+            prefixIcon: Icon(Icons.search),
+            labelText: "Search your country",
+          )
+        ),
+        onCountryChanged: (country) => setState(() => selectedCountry = country),
+        controller: widget.controller,
+        cursorColor: primaryColor,
+        validator: (value) {
+          if (value == null || value.number.isEmpty) {
+            setState(() => errorText = "Required");
+            return "";
+          }
+          if (value.completeNumber.length >= selectedCountry.minLength && 
+              value.completeNumber.length <= selectedCountry.maxLength) {
+            setState(() => errorText = "");
+            return null;
+          }
+          setState(() => errorText = "Not valid");
+          return "";
+        },
+        style: Theme.of(context).textTheme.labelMedium,
+        onSaved: (number) => widget.onSaved!(number?.completeNumber ?? ""),
+        decoration: InputDecoration(
+          isDense: true,
+          labelText: "Phone Number" + (errorText.isNotEmpty ? " - $errorText" : ""),
+          hintText: "Your Phone Number...",
+          labelStyle: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: primaryColor),
+          errorStyle: const TextStyle(height: 0),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          floatingLabelStyle: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(color: primaryColor, fontWeight: FontWeight.bold),
+          hintStyle: Theme.of(context).textTheme.labelMedium,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
+            borderSide: BorderSide(width: 2, color: primaryColor)),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius)),
+            borderSide: BorderSide(width: 2, color: primaryColor)),
+          border: InputBorder.none,
+        ),
+      ) : TextFormField(
         obscuringCharacter: '*',
         readOnly: !widget.enabled,
         validator: (val) {
@@ -99,11 +172,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
           bool pswValid = RegExp(
                   r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
               .hasMatch(val);
-          bool phoneValid = RegExp(r"^(?:[+0]9)?[0-9]{10}$").hasMatch(val);
-          if ((!pswValid &&
-                  widget.inputType == TextInputType.visiblePassword) ||
-              (!emailValid && widget.inputType == TextInputType.emailAddress) ||
-              (!phoneValid && widget.inputType == TextInputType.phone)) {
+          if ((!pswValid && widget.inputType == TextInputType.visiblePassword) ||
+              (!emailValid && widget.inputType == TextInputType.emailAddress)) {
             setState(() {
               errorText = "Not valid";
             });

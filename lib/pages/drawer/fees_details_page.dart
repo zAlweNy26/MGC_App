@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mgclinic/fee.dart';
+import 'package:mgclinic/widgets/custom_datatable.dart';
 
 class FeesDetailsPage extends StatefulWidget {
   const FeesDetailsPage({Key? key}) : super(key: key);
@@ -15,7 +16,6 @@ class _FeesDetailsPageState extends State<FeesDetailsPage> {
     const Fee(title: "Follow Up", subtitle: "(15 - 20mins)", price: "", details: [
       Details(title: "Regular", price: "€ 38", description: "Patient's record logging. Treatment."),
       Details(title: "Senior", price: "€ 30"),
-      Details(title: "", price: ""),
       Details(title: "Student", price: "€ 25", description: "Patient's record logging. Management will change according to age and condition."),
       Details(title: "Under 16", price: "€ 20"),
     ]),
@@ -36,81 +36,80 @@ class _FeesDetailsPageState extends State<FeesDetailsPage> {
                 child: Text("Fees details",
                     style: Theme.of(context).textTheme.titleLarge)),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(10),
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: RichText(
+          CustomDataTable(
+            headingTextStyle: Theme.of(context).textTheme.headlineSmall,
+            columns: const [  
+              DataColumn(label: Expanded(child: Text('Type', textAlign: TextAlign.center))),  
+              DataColumn(label: Expanded(child: Text('Price', textAlign: TextAlign.center))),  
+              DataColumn(label: Expanded(child: Text('Description', textAlign: TextAlign.center))),  
+            ],
+            rows: [ 
+              for (Fee fee in fees) 
+                DataRow(cells: [  
+                  DataCell(
+                    Column(
+                      children: [
+                        RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                            text: fees[index].title,
+                            text: fee.title,
                             style: Theme.of(context).textTheme.titleSmall,
                             children: [
                               TextSpan(
-                                text: "\n${fees[index].subtitle}",
+                                text: "\n${fee.subtitle}",
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           )
                         ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(fees[index].price, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 3,
-                        child: Text(fees[index].description,
-                          style: Theme.of(context).textTheme.bodySmall,
-                          maxLines: 5,
-                          softWrap: true,
-                        ),
-                      )
-                    ],
-                  ),
-                  if (fees[index].details.isNotEmpty) ...[
-                    for (var detail in fees[index].details) 
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text(detail.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
-                            ],
+                        if (fee.details.isNotEmpty) const SizedBox(height: 5),
+                        for (Details detail in fee.details)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(detail.title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Text(detail.price, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: detail.title.isNotEmpty ? 
-                            Center(child: Text(detail.description, style: Theme.of(context).textTheme.bodySmall)) :
-                            const Divider(thickness: 2),
-                        )
                       ],
                     )
-                  ],
-                ],
-              );
-            },
-            separatorBuilder: (context, index) => const Divider(thickness: 2), 
-            itemCount: fees.length
-          )
+                  ),
+                  DataCell(
+                    Column(
+                      children: [
+                        Center(child: Text(fee.price, style: Theme.of(context).textTheme.titleSmall)),
+                        if (fee.details.isNotEmpty) const SizedBox(height: 25),
+                        for (Details detail in fee.details)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(detail.price, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleSmall),
+                          ),
+                      ],
+                    )
+                  ),  
+                  DataCell(
+                    Column(
+                      children: [
+                        Center(
+                          child: Text(fee.description,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            maxLines: 5,
+                            softWrap: true,
+                          ),
+                        ),
+                        if (fee.details.isNotEmpty) const SizedBox(height: 30),
+                        for (var i = 0; i < fee.details.length; i++) 
+                          fee.details[i].description.isNotEmpty ?
+                            Text(fee.details[i].description, style: Theme.of(context).textTheme.bodySmall) : 
+                            (i != fee.details.length - 1 ? Column(
+                              children: const [
+                                SizedBox(height: 10),
+                                Divider(),
+                              ],
+                            ) : Container()), 
+                      ],
+                    )
+                  ),  
+                ])
+            ],  
+          ),
         ],
       ),
     );

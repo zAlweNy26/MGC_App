@@ -1,5 +1,5 @@
 name: mgclinic
-description: Are you alone but want to travel in company? With MG Clinic you can meet someone with your same interests and ideas of travel !
+description: App of the Malta & Gozo chiropratic clinics !
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -53,6 +53,8 @@ dependencies:
   google_maps_flutter: ^2.1.6
   flutter_email_sender: ^5.1.0
   webview_flutter: ^3.0.4
+  intl_phone_field: ^3.1.0
+  time_picker_widget: ^1.0.0+10
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +82,7 @@ flutter:
   assets:
     - captcha.jpeg
     - logo.png
+    - splash_logo.png
     - assets/nav/
     - assets/brands/
     - assets/coins/

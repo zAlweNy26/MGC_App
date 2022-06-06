@@ -1,13 +1,15 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:mgclinic/constants.dart';
+import 'package:mgclinic/fee.dart';
 import 'package:mgclinic/widgets/custom_button.dart';
 import 'package:mgclinic/widgets/custom_input.dart';
 import 'package:mgclinic/widgets/custom_switch.dart';
-import 'package:mgclinic/widgets/filterable_bottompicker.dart';
+import 'package:mgclinic/widgets/number_captcha.dart';
+import 'package:time_picker_widget/time_picker_widget.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({Key? key}) : super(key: key);
@@ -29,6 +31,11 @@ class _BookingPageState extends State<BookingPage> {
       appointmentType = "",
       appointmentError = "";
   bool privacyAccepted = false, rememberDetails = false;
+  List<Clinic> clinics = const [
+    Clinic(name: "Mellieha (Monday)", availableDays: [DateTime.monday], openHour: 15, closeHour: 18, closeMinute: 30),
+    Clinic(name: "San Gwann (Thursday)", availableDays: [DateTime.thursday], openHour: 14, closeHour: 18, closeMinute: 30),
+    Clinic(name: "Gozo (Tuesday)", availableDays: [DateTime.tuesday], openHour: 8, closeHour: 19),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +99,7 @@ class _BookingPageState extends State<BookingPage> {
                     borderRadius: BorderRadius.circular(20),
                     child: DropdownSearch<String>(
                       mode: Mode.BOTTOM_SHEET,
-                      items: const ["Mellieha (Monday)", "San Gwann (Thursday)", "Gozo (Tuesday)"],
+                      items: clinics.map((e) => e.name).toList(),
                       dropdownBuilder: (ctx, text) {
                         return Text(text ?? "Choose a clinic...", style: Theme.of(context).textTheme.labelMedium);
                       },
@@ -113,6 +120,7 @@ class _BookingPageState extends State<BookingPage> {
                       maxHeight: 175,
                       dropdownSearchDecoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0),
+                        border: InputBorder.none,
                         prefixIcon: Icon(Icons.location_pin,
                               color: Theme.of(context).backgroundColor),
                         labelText:
@@ -176,6 +184,7 @@ class _BookingPageState extends State<BookingPage> {
                       maxHeight: 220,
                       dropdownSearchDecoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0),
+                        border: InputBorder.none,
                         prefixIcon: Icon(Icons.local_hospital_rounded,
                               color: Theme.of(context).backgroundColor),
                         labelText:
@@ -221,27 +230,89 @@ class _BookingPageState extends State<BookingPage> {
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     onTap: () {
                       if (clinic.isEmpty) return;
-                      /*showDatePicker(
+                      showDatePicker(
                         context: context, 
                         initialDate: DateTime.now().add(const Duration(days: 7)),
                         firstDate: DateTime.now().add(const Duration(days: 7)),
                         lastDate: DateTime.now().add(const Duration(days: 365)),
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: primaryColor,
+                                onPrimary: Theme.of(context).scaffoldBackgroundColor,
+                                onSurface: Theme.of(context).backgroundColor,
+                              ),
+                              textTheme: TextTheme(overline: Theme.of(context).textTheme.headlineSmall),
+                              textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: primaryColor)),
+                            ),
+                            child: child!,
+                          );
+                        },
+                        selectableDayPredicate: (date) {
+                          Clinic clinic = clinics.firstWhere((e) => e.name == this.clinic);
+                          return !clinic.availableDays.contains(date.weekday);
+                        },
                       ).then((date) {
                         if (date != null) {
-                          showTimePicker(
+                          showCustomTimePicker(
                             context: context, 
-                            initialTime: TimeOfDay.now()
+                            onFailValidation: (context) => showMessage(context, 'Unavailable selection !'),
+                            initialTime: const TimeOfDay(hour: 14, minute: 0),
+                            builder: (context, child) {
+                              return MediaQuery(
+                                data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: primaryColor,
+                                      onPrimary: Theme.of(context).backgroundColor,
+                                    ),
+                                    timePickerTheme: TimePickerThemeData(
+                                      hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+                                        states.contains(MaterialState.selected)
+                                          ? primaryColor
+                                          : Theme.of(context).backgroundColor),
+                                      dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
+                                        states.contains(MaterialState.selected)
+                                          ? primaryColor
+                                          : Theme.of(context).backgroundColor),
+                                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                      dialTextColor: MaterialStateColor.resolveWith((states) =>
+                                        states.contains(MaterialState.selected)
+                                          ? Theme.of(context).scaffoldBackgroundColor
+                                          : Theme.of(context).backgroundColor),
+                                    ),
+                                    textTheme: TextTheme(overline: Theme.of(context).textTheme.headlineSmall),
+                                    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: primaryColor)),
+                                  ),
+                                  child: child!,
+                                ),
+                              );
+                            },
+                            selectableTimePredicate: (time) {
+                              if (time != null) {
+                                Clinic clinic = clinics.firstWhere((e) => e.name == this.clinic);
+                                bool isInHoursRange =time.hour >= clinic.openHour && time.hour <= clinic.closeHour;
+                                bool isInMinutesRange = time.minute >= clinic.openMinute && time.minute <= clinic.closeMinute;
+                                return time.hour != clinic.closeHour ? isInHoursRange : (isInHoursRange && isInMinutesRange);
+                              }
+                              return false;
+                            }
                           ).then((time) {
                             if (time != null) {
                               setState(() {
-                                dateTime = DateFormat("dd/MM/yyyy").format(date) + " at ${time.toString().substring(10, 15)}";
+                                dateTime = DateFormat("dd/MM/yyyy").format(date) + 
+                                  " at ${time.replacing(hour: time.hourOfPeriod).toString().replaceAll("TimeOfDay", "").substring(1, 6)} " +
+                                  (time.hour <= 12 ? "am" : "pm");
                                 dateTimeController.text = dateTime;
                               });
                             }
                           });
                         }
-                      });*/
-                      CustomBottomPicker.dateTime(
+                      });
+                      /*CustomBottomPicker.dateTime(
                           title: "Select a date and time :",
                           dismissable: true,
                           use24hFormat: true,
@@ -273,11 +344,11 @@ class _BookingPageState extends State<BookingPage> {
                           maxDateTime:
                               DateTime.now().add(const Duration(days: 365)),
                           dateOrder: DatePickerDateOrder.dmy)
-                      .show(context);
+                      .show(context);*/
                     },
                   ),
                   SizedBox(height: screen.width * 0.05),
-                  CustomSwitch(
+                  /*CustomSwitch(
                     onSaved: (val) => rememberDetails = val ?? false,
                     borderColor: primaryColor,
                     selectedIconColor: primaryColor,
@@ -286,7 +357,7 @@ class _BookingPageState extends State<BookingPage> {
                       "Remember my details",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                  ),
+                  ),*/
                   CustomSwitch(
                     onSaved: (val) => privacyAccepted = val ?? false,
                     borderColor: primaryColor,
@@ -297,13 +368,32 @@ class _BookingPageState extends State<BookingPage> {
                         style: Theme.of(context).textTheme.bodySmall,
                         children: [
                           TextSpan(
-                              text: " Terms and Conditions",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                      color: primaryColor,
-                                      fontWeight: FontWeight.bold)),
+                            text: " Terms and Conditions",
+                            recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              await showDialog(
+                                context: context, 
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text("Terms and Conditions"),
+                                  content: Text(
+                                    "* You will be asked detailed information of your personal and family health, present and past, in order to gain an understanding of your complaint. Your answers and comments will be dealt with, strictly confidentially and will be stored in a off-line database for seven (7) years. This is a legal requirement. * You have the right to peruse, copy and/or destroy your clinical record (before the seven years) as long as you request so in formal writing. * A chiropractic practitioner will need to look at your (undressed) back therefore you may be asked to expose parts of your body. You will NEVER be asked to reveal intimate areas. * Patients under the age of 18 years, seeking chiropractic help, MUST be accompanied by an adult who will remain in the clinic room at all times during the consultation.",
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("Close"),
+                                      onPressed: () => Navigator.pop(ctx),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -317,7 +407,8 @@ class _BookingPageState extends State<BookingPage> {
                         fit: FlexFit.tight,
                         child: CustomButton(
                           onPressed: () async {
-                            if (_bookKey.currentState!.validate()) {
+                            bool isValid = await CustomNumberCaptcha.show(context, accentColor: primaryColor);
+                            if (_bookKey.currentState!.validate() && isValid) {
                               _bookKey.currentState!.save();
                               final Email sendEmail = Email(
                                 body: '',
@@ -341,4 +432,39 @@ class _BookingPageState extends State<BookingPage> {
       ]),
     );
   }
+
+  showMessage(BuildContext context, String message) => showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        contentPadding: EdgeInsets.zero,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 16),
+            const Icon(Icons.warning, color: Colors.amber, size: 56),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text('Ok', style: Theme.of(context).textTheme.headlineSmall),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  );
 }
